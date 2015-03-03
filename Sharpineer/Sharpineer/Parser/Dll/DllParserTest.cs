@@ -13,7 +13,7 @@ namespace Sharpineer.Parser.Dll
         [Test]
         public void EnumTest()
         {
-            var parser = new DllParser("ClangSharp.dll");
+            var parser = new DllParser("C:\\Users\\Rico\\Desktop\\dwm\\dwmapi.dll");
             parser.Parse();
         }
     }

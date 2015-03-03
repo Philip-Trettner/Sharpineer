@@ -89,6 +89,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Helper\ClangExtensions.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -98,6 +99,8 @@
     <Compile Include="Parser\Dll\Dbghelp.cs" />
     <Compile Include="Parser\Dll\DllParser.cs" />
     <Compile Include="Parser\Dll\DllParserTest.cs" />
+    <Compile Include="Parser\Header\EnumInfo.cs" />
+    <Compile Include="Parser\Header\ForwardDeclVisitor.cs" />
     <Compile Include="Parser\Header\HeaderParser.cs" />
     <Compile Include="Parser\Header\HeaderParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
