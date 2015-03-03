@@ -15,6 +15,8 @@ namespace Sharpineer.Parser.Dll
         {
             var parser = new DllParser("c:\\windows\\system32\\user32.dll");
             parser.Parse();
+
+            Assert.IsNotEmpty(parser.FunctionNames);
         }
     }
 }
