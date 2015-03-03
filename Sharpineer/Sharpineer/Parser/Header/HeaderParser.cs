@@ -20,6 +20,11 @@ namespace Sharpineer.Parser.Header
         /// </summary>
         public readonly List<EnumInfo> Enums = new List<EnumInfo>();
 
+        /// <summary>
+        /// All discovered extern "C" functions
+        /// </summary>
+        public readonly List<ExternFunctionInfo> ExternFunctions = new List<ExternFunctionInfo>();
+
         public HeaderParser(params string[] headerFiles)
         {
             HeaderFiles = headerFiles;
@@ -60,9 +65,48 @@ namespace Sharpineer.Parser.Header
             // visit enums
             clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitEnums, new CXClientData(IntPtr.Zero));
 
+            // visit extern functions
+            clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitExternFunctions, new CXClientData(IntPtr.Zero));
+
             // cleanup
             clang.disposeIndex(index);
             clang.disposeTranslationUnit(unit);
+        }
+
+        public CXChildVisitResult VisitExternFunctions(CXCursor cursor, CXCursor parent, IntPtr data)
+        {
+            // check for functions
+            var curKind = clang.getCursorKind(cursor);
+            if (curKind != CXCursorKind.CXCursor_FunctionDecl) return CXChildVisitResult.CXChildVisit_Recurse;
+
+            var funcType = clang.getCursorType(cursor);
+            var funcName = clang.getCursorSpelling(cursor).ToString();
+            var callingConv = clang.getFunctionTypeCallingConv(funcType);
+
+            var info = new ExternFunctionInfo
+            {
+                Name = funcName,
+                CallingConvention = callingConv,
+                ReturnType = TypeInfo.FromClangType(clang.getResultType(funcType))
+            };
+            var argc = clang.getNumArgTypes(funcType);
+            for (uint i = 0; i < argc; ++i)
+                info.Parameters.Add(new ArgumentInfo()
+                {
+                    Name = "???",
+                    Type = TypeInfo.FromClangType(clang.getArgType(funcType, i))
+                });
+
+            // already found? continue
+            // TODO: error checking?
+            if (ExternFunctions.Any(f => f.Name == funcName))
+                return CXChildVisitResult.CXChildVisit_Continue;
+
+            // add func info
+            ExternFunctions.Add(info);
+
+            // recurse
+            return CXChildVisitResult.CXChildVisit_Recurse;
         }
 
         public CXChildVisitResult VisitEnums(CXCursor cursor, CXCursor parent, IntPtr data)
