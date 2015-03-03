@@ -102,7 +102,7 @@ namespace Sharpineer.Parser.Header
             for (uint i = 0; i < argc; ++i)
                 info.Parameters.Add(new ArgumentInfo()
                 {
-                    Name = "???",
+                    Name = clang.getCursorSpelling(clang.Cursor_getArgument(cursor, i)).ToString(),
                     Type = TypeInfo.FromClangType(clang.getArgType(funcType, i))
                 });
 

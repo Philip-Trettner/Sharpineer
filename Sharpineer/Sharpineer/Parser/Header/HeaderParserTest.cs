@@ -140,7 +140,7 @@ namespace Sharpineer.Parser.Header
 
                 Assert.AreEqual(f.Parameters[0].Name, "c");
                 Assert.AreEqual(f.Parameters[1].Name, "s");
-                Assert.AreEqual(f.Parameters[2].Name, "i");
+                Assert.AreEqual(f.Parameters[2].Name, "b");
 
                 Assert.AreEqual(f.Parameters[0].Type.Name, "char");
                 Assert.AreEqual(f.Parameters[1].Type.Name, "short");
