@@ -156,6 +156,11 @@ namespace Sharpineer.Parser.Header
                 var f = funcs["qux"];
                 Assert.NotNull(f);
             }
+
+            {
+                // not important for now
+                // Assert.That(!funcs.ContainsKey("nofoo"));
+            }
         }
     }
 }

@@ -31,3 +31,5 @@ extern "C"
 
 	}
 }
+
+void nofoo();
