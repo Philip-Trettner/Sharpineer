@@ -32,7 +32,7 @@ namespace Sharpineer.Parser.Dll
             string Name;
         }
         public delegate bool SYM_ENUMERATESYMBOLS_CALLBACKW(
-            [param: MarshalAs(UnmanagedType.LPStruct)]
+            [param: MarshalAs(UnmanagedType.Struct)]
             SYMBOL_INFOW pSymInfo,
             UInt32 SymbolSize,
             IntPtr UserContext
@@ -48,7 +48,7 @@ namespace Sharpineer.Parser.Dll
         [DllImport("dbghelp.dll", EntryPoint = "SymCleanup", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = true)]
         public static extern bool SymCleanup(IntPtr process);
 
-        [DllImport("DbgHelp.dll")]
+        [DllImport("DbgHelp.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = true)]
         public static extern bool SymEnumSymbols(
             IntPtr hProcess,
             UInt64 BaseOfDll,
