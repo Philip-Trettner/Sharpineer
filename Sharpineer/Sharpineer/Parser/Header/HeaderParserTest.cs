@@ -67,5 +67,15 @@ namespace Sharpineer.Parser.Header
                 Assert.AreEqual(e.BaseType, "short");
             }
         }
+
+        [Test]
+        public void EnumWindowsTest()
+        {
+            var parser = new HeaderParser("Windows.h");
+            parser.Parse();
+
+            var enums = parser.Enums;
+            Assert.Greater(enums.Count, 0);
+        }
     }
 }
