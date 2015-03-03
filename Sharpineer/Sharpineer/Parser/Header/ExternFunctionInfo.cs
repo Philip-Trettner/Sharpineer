@@ -18,6 +18,11 @@ namespace Sharpineer.Parser.Header
         public string Name;
 
         /// <summary>
+        /// Name of the imported dll
+        /// </summary>
+        public string DllName;
+
+        /// <summary>
         /// Function parameters
         /// </summary>
         public readonly List<ArgumentInfo> Parameters = new List<ArgumentInfo>();

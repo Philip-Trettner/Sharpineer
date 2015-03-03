@@ -23,11 +23,20 @@ namespace Sharpineer.Parser.Header
         /// <summary>
         /// All discovered extern "C" functions
         /// </summary>
-        public readonly List<ExternFunctionInfo> ExternFunctions = new List<ExternFunctionInfo>();
+        public readonly Dictionary<string, ExternFunctionInfo> ExternFunctions = new Dictionary<string, ExternFunctionInfo>();
 
         public HeaderParser(params string[] headerFiles)
         {
             HeaderFiles = headerFiles;
+        }
+
+        /// <summary>
+        /// Annotate external functions with dll name
+        /// </summary>
+        public void NotifyDll(string dllName, IEnumerable<string> funcNames)
+        {
+            foreach (var funcName in funcNames.Where(funcName => ExternFunctions.ContainsKey(funcName)))
+                ExternFunctions[funcName].DllName = dllName;
         }
 
         /// <summary>
@@ -99,11 +108,11 @@ namespace Sharpineer.Parser.Header
 
             // already found? continue
             // TODO: error checking?
-            if (ExternFunctions.Any(f => f.Name == funcName))
+            if (ExternFunctions.ContainsKey(info.Name))
                 return CXChildVisitResult.CXChildVisit_Continue;
 
             // add func info
-            ExternFunctions.Add(info);
+            ExternFunctions.Add(info.Name, info);
 
             // recurse
             return CXChildVisitResult.CXChildVisit_Recurse;

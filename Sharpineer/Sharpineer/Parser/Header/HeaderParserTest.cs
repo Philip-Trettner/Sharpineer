@@ -113,7 +113,7 @@ namespace Sharpineer.Parser.Header
             var funcs = parser.ExternFunctions;
 
             {
-                var f = funcs.FirstOrDefault(fi => fi.Name == "foo");
+                var f = funcs["foo"];
                 Assert.NotNull(f);
 
                 Assert.AreEqual(f.Name, "foo");
@@ -122,7 +122,7 @@ namespace Sharpineer.Parser.Header
             }
 
             {
-                var f = funcs.FirstOrDefault(fi => fi.Name == "foof");
+                var f = funcs["foof"];
                 Assert.NotNull(f);
 
                 Assert.AreEqual(f.Name, "foof");
@@ -131,7 +131,7 @@ namespace Sharpineer.Parser.Header
             }
 
             {
-                var f = funcs.FirstOrDefault(fi => fi.Name == "bar");
+                var f = funcs["bar"];
                 Assert.NotNull(f);
 
                 Assert.AreEqual(f.Name, "bar");
@@ -148,12 +148,12 @@ namespace Sharpineer.Parser.Header
             }
 
             {
-                var f = funcs.FirstOrDefault(fi => fi.Name == "baz");
+                var f = funcs["baz"];
                 Assert.NotNull(f);
             }
 
             {
-                var f = funcs.FirstOrDefault(fi => fi.Name == "qux");
+                var f = funcs["qux"];
                 Assert.NotNull(f);
             }
         }

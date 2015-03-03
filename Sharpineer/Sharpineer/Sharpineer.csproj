@@ -106,6 +106,7 @@
     <Compile Include="Parser\Header\HeaderParser.cs" />
     <Compile Include="Parser\Header\HeaderParserTest.cs" />
     <Compile Include="Parser\Header\TypeInfo.cs" />
+    <Compile Include="Parser\ParserTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
