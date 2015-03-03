@@ -96,7 +96,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Parser\Dll\Dbghelp.cs" />
     <Compile Include="Parser\Dll\DllParser.cs" />
+    <Compile Include="Parser\Dll\DllParserTest.cs" />
     <Compile Include="Parser\Header\ArgumentInfo.cs" />
     <Compile Include="Parser\Header\EnumInfo.cs" />
     <Compile Include="Parser\Header\ExternFunctionInfo.cs" />
