@@ -13,7 +13,7 @@ namespace Sharpineer.Parser.Dll
         [Test]
         public void EnumTest()
         {
-            var parser = new DllParser("C:\\Users\\Rico\\Desktop\\dwm\\dwmapi.dll");
+            var parser = new DllParser("c:\\windows\\system32\\user32.dll");
             parser.Parse();
         }
     }
