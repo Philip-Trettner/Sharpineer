@@ -67,10 +67,6 @@ namespace Sharpineer.Parser.Header
 
         public CXChildVisitResult VisitEnums(CXCursor cursor, CXCursor parent, IntPtr data)
         {
-            // ignore system headers
-            if (cursor.IsInSystemHeader())
-                return CXChildVisitResult.CXChildVisit_Continue;
-
             // check for enums
             var curKind = clang.getCursorKind(cursor);
             if (curKind != CXCursorKind.CXCursor_EnumDecl) return CXChildVisitResult.CXChildVisit_Recurse;

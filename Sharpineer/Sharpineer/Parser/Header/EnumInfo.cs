@@ -27,5 +27,10 @@ namespace Sharpineer.Parser.Header
         /// List of enclosed namespaces
         /// </summary>
         public readonly List<string> Namespaces = new List<string>();
+
+        public override string ToString()
+        {
+            return "enum " + Name + " \n{\n" + Values.Select(kvp => "  " + kvp.Key + ",\n").Aggregate((s1, s2) => s1 + s2) + "}";
+        }
     }
 }
