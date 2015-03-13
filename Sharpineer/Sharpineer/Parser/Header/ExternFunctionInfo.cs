@@ -43,6 +43,11 @@ namespace Sharpineer.Parser.Header
         public bool HasAnsiUnicodeVersions;
 
         /// <summary>
+        /// True if any parameter is unnamed
+        /// </summary>
+        public bool HasUnnamedParameter => Parameters.Any(p => string.IsNullOrEmpty(p.Name));
+
+        /// <summary>
         /// True iff any type requires unicode
         /// </summary>
         public bool RequiresUnicode => Parameters.Any(p => p.Type.RequiresUnicode) || ReturnType.RequiresUnicode;
@@ -55,7 +60,7 @@ namespace Sharpineer.Parser.Header
         /// <summary>
         /// C# Parameter string without braces
         /// </summary>
-        public string ParametersCSharpString => Parameters.Count == 0 ? "" : Parameters.Select(p => p.Type.DecoratedCSharpType + " " + p.Name).Aggregate((s1, s2) => s1 + ", " + s2);
+        public string ParametersCSharpString => Parameters.Count == 0 ? "" : Parameters.Select(p => p.Type.DecoratedCSharpType + " @" + p.Name).Aggregate((s1, s2) => s1 + ", " + s2);
 
         /// <summary>
         /// C# Function declaration

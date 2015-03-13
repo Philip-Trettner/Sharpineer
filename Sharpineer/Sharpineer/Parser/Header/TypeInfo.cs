@@ -51,6 +51,8 @@ namespace Sharpineer.Parser.Header
                     break;
 
                 default:
+                    if (Name != OriginalName)
+                        TypeComment = OriginalName;
                     switch (Name)
                     {
                         case "void":
@@ -73,7 +75,7 @@ namespace Sharpineer.Parser.Header
                             break;
 
                         case "unsigned long long":
-                            CSharpType = "ulonglong";
+                            CSharpType = "ulong";
                             break;
 
                         case "short":

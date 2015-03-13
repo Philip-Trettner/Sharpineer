@@ -23,14 +23,15 @@ namespace Sharpineer.Parser
             dparser.Parse();
 
             hparser.NotifyDll("User32.dll", dparser.FunctionNames);
+            hparser.MergeAnsiUnicode();
 
             {
-                var f = hparser.ExternFunctions["GetWindowTextA"];
+                var f = hparser.ExternFunctions["GetWindowText"];
                 Assert.NotNull(f);
                 Assert.AreEqual(f.DllName, "User32.dll");
             }
 
-            var userFuncs = hparser.ExternFunctions.Values.Where(f => f.DllName == "User32.dll").ToList();
+            var userFuncs = hparser.ExternFunctions.Values.Where(f => f.DllName == "User32.dll" && !f.HasUnnamedParameter).ToList();
             Assert.IsNotEmpty(userFuncs);
 
             File.WriteAllLines(@"C:\Temp\userfuncs.txt", userFuncs.OrderBy(f => f.Name).Select(f => f.Name + "(" + (f.Parameters.Count == 0 ? " " : f.Parameters.Select(p => p.ToString()).Aggregate((s1, s2) => s1 + ", " + s2)) + ") -> " + f.ReturnType));

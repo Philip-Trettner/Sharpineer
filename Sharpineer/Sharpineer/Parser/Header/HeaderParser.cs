@@ -25,6 +25,29 @@ namespace Sharpineer.Parser.Header
         /// </summary>
         public readonly Dictionary<string, ExternFunctionInfo> ExternFunctions = new Dictionary<string, ExternFunctionInfo>();
 
+        /// <summary>
+        /// Merges ansi and unicode functions
+        /// (keeps unicode versions)
+        /// </summary>
+        public void MergeAnsiUnicode()
+        {
+            foreach (var kvp in ExternFunctions.ToArray())
+            {
+                var name = kvp.Key;
+                var f = kvp.Value;
+
+                if (name.EndsWith("W") &&
+                    ExternFunctions.ContainsKey(name.Substring(0, name.Length - 1) + "A"))
+                {
+                    ExternFunctions.Remove(name.Substring(0, name.Length - 1) + "A");
+                    ExternFunctions.Remove(name);
+
+                    f.Name = name.Substring(0, name.Length - 1);
+                    ExternFunctions.Add(f.Name, f);
+                }
+            }
+        }
+
         public HeaderParser(params string[] headerFiles)
         {
             HeaderFiles = headerFiles;
@@ -91,7 +114,7 @@ namespace Sharpineer.Parser.Header
             var funcType = clang.getCursorType(cursor);
             var funcName = clang.getCursorSpelling(cursor).ToString();
             var callingConv = clang.getFunctionTypeCallingConv(funcType);
-            
+
             var info = new ExternFunctionInfo
             {
                 Name = funcName,
@@ -105,7 +128,7 @@ namespace Sharpineer.Parser.Header
                     Name = clang.getCursorSpelling(clang.Cursor_getArgument(cursor, i)).ToString(),
                     Type = TypeInfo.FromClangType(clang.getArgType(funcType, i))
                 });
-            
+
             // already found? continue
             // TODO: error checking?
             if (ExternFunctions.ContainsKey(info.Name))
