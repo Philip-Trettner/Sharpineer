@@ -26,6 +26,11 @@ namespace Sharpineer.Parser.Header
         public readonly Dictionary<string, ExternFunctionInfo> ExternFunctions = new Dictionary<string, ExternFunctionInfo>();
 
         /// <summary>
+        /// All known structs
+        /// </summary>
+        public readonly Dictionary<string, StructInfo> Structs = new Dictionary<string, StructInfo>();
+
+        /// <summary>
         /// Merges ansi and unicode functions
         /// (keeps unicode versions)
         /// </summary>
@@ -100,6 +105,9 @@ namespace Sharpineer.Parser.Header
             // visit extern functions
             clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitExternFunctions, new CXClientData(IntPtr.Zero));
 
+            // visit structs
+            clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitStructs, new CXClientData(IntPtr.Zero));
+
             // cleanup
             clang.disposeIndex(index);
             clang.disposeTranslationUnit(unit);
@@ -139,6 +147,46 @@ namespace Sharpineer.Parser.Header
 
             // recurse
             return CXChildVisitResult.CXChildVisit_Recurse;
+        }
+
+        public CXChildVisitResult VisitStructs(CXCursor cursor, CXCursor parent, IntPtr data)
+        {
+            // check for functions
+            var curKind = clang.getCursorKind(cursor);
+            if (curKind != CXCursorKind.CXCursor_StructDecl) return CXChildVisitResult.CXChildVisit_Recurse;
+
+            var structType = clang.getCursorType(cursor);
+            var structName = clang.getCursorSpelling(cursor).ToString();
+
+            if (Structs.ContainsKey(structName))
+                return CXChildVisitResult.CXChildVisit_Continue;
+
+            var info = new StructInfo()
+            {
+                Name = structName,
+                TypeInfo = TypeInfo.FromClangType(structType)
+            };
+            Structs.Add(structName, info);
+
+            clang.visitChildren(cursor, (cxCursor, parent1, clientData) =>
+            {
+                var kind = clang.getCursorKind(cxCursor);
+                if (kind != CXCursorKind.CXCursor_FieldDecl) return CXChildVisitResult.CXChildVisit_Recurse;
+
+                var fieldType = clang.getCursorType(cxCursor);
+                var fieldName = clang.getCursorSpelling(cxCursor).ToString();
+
+                info.Members.Add(new ArgumentInfo()
+                {
+                    Name = fieldName,
+                    Type = TypeInfo.FromClangType(fieldType)
+                });
+
+                return CXChildVisitResult.CXChildVisit_Recurse;
+            }, new CXClientData(IntPtr.Zero));
+
+            // recurse
+            return CXChildVisitResult.CXChildVisit_Continue;
         }
 
         public CXChildVisitResult VisitEnums(CXCursor cursor, CXCursor parent, IntPtr data)

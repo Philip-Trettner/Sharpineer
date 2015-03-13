@@ -80,6 +80,29 @@ namespace Sharpineer.Parser.Header
         }
 
         [Test]
+        public void StructWindows()
+        {
+            var parser = new HeaderParser("Windows.h");
+            parser.Parse();
+
+            var structs = parser.Structs;
+            Assert.IsNotEmpty(structs);
+
+            var hwnds = structs.Where(kvp => kvp.Key.Contains("HWND")).ToList();
+            Assert.IsNotEmpty(hwnds);
+
+            Assert.That(structs.ContainsKey("HWND__"));
+
+            var rects = structs.Where(kvp => kvp.Key.Contains("RECT") || kvp.Key.Contains("Rect")).ToList();
+
+            Assert.IsNotEmpty(rects);
+            Assert.That(structs.ContainsKey("tagRECT"));
+
+            var rect = structs["tagRECT"];
+            Assert.IsNotEmpty(rect.Members);
+        }
+
+        [Test]
         public void ExternFunctions()
         {
             var parser = new HeaderParser("data/ExternFunctionTestHeader.h");
@@ -169,7 +192,7 @@ namespace Sharpineer.Parser.Header
         {
             var parser = new HeaderParser("Windows.h");
             parser.Parse();
-            
+
             var funcs = parser.ExternFunctions;
             Assert.That(funcs.ContainsKey("GetWindowTextA"));
 
