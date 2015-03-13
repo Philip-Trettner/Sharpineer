@@ -24,9 +24,25 @@ namespace Sharpineer.Parser
 
             hparser.NotifyDll("User32.dll", dparser.FunctionNames);
 
-            var f = hparser.ExternFunctions["GetWindowTextA"];
-            Assert.NotNull(f);
-            Assert.AreEqual(f.DllName, "User32.dll");
+            {
+                var f = hparser.ExternFunctions["GetWindowTextA"];
+                Assert.NotNull(f);
+                Assert.AreEqual(f.DllName, "User32.dll");
+            }
+
+            var userFuncs = hparser.ExternFunctions.Values.Where(f => f.DllName == "User32.dll").ToList();
+            Assert.IsNotEmpty(userFuncs);
+
+            File.WriteAllLines(@"C:\Temp\userfuncs.txt", userFuncs.OrderBy(f => f.Name).Select(f => f.Name + "(" + (f.Parameters.Count == 0 ? " " : f.Parameters.Select(p => p.ToString()).Aggregate((s1, s2) => s1 + ", " + s2)) + ") -> " + f.ReturnType));
+
+            var list = new List<string>();
+            foreach (var func in userFuncs.OrderBy(f => f.Name))
+            {
+                list.Add("");
+                list.Add(func.DllImportString);
+                list.Add(func.FunctionDeclaration);
+            }
+            File.WriteAllLines(@"C:\Temp\userfuncs-sharp.txt", list);
         }
     }
 }

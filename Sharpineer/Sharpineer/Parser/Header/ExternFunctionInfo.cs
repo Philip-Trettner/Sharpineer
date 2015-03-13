@@ -36,5 +36,30 @@ namespace Sharpineer.Parser.Header
         /// Calling convention
         /// </summary>
         public CXCallingConv CallingConvention;
+
+        /// <summary>
+        /// If true, this function has FooA/FooW versions
+        /// </summary>
+        public bool HasAnsiUnicodeVersions;
+
+        /// <summary>
+        /// True iff any type requires unicode
+        /// </summary>
+        public bool RequiresUnicode => Parameters.Any(p => p.Type.RequiresUnicode) || ReturnType.RequiresUnicode;
+
+        /// <summary>
+        /// [DllImport] Statement
+        /// </summary>
+        public string DllImportString => string.Format("[DllImport(\"{0}\", CharSet = CharSet.{1}, SetLastError = true)]", DllName, RequiresUnicode ? "Unicode" : "Auto");
+
+        /// <summary>
+        /// C# Parameter string without braces
+        /// </summary>
+        public string ParametersCSharpString => Parameters.Count == 0 ? "" : Parameters.Select(p => p.Type.DecoratedCSharpType + " " + p.Name).Aggregate((s1, s2) => s1 + ", " + s2);
+
+        /// <summary>
+        /// C# Function declaration
+        /// </summary>
+        public string FunctionDeclaration => string.Format("public static {0} {1}({2});", ReturnType.DecoratedCSharpType, Name, ParametersCSharpString);
     }
 }

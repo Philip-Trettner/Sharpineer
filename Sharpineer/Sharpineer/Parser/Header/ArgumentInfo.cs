@@ -13,5 +13,7 @@ namespace Sharpineer.Parser.Header
     {
         public string Name;
         public TypeInfo Type;
+
+        public override string ToString() => Name + ": " + Type;
     }
 }

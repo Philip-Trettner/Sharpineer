@@ -91,7 +91,7 @@ namespace Sharpineer.Parser.Header
             var funcType = clang.getCursorType(cursor);
             var funcName = clang.getCursorSpelling(cursor).ToString();
             var callingConv = clang.getFunctionTypeCallingConv(funcType);
-
+            
             var info = new ExternFunctionInfo
             {
                 Name = funcName,
@@ -105,7 +105,7 @@ namespace Sharpineer.Parser.Header
                     Name = clang.getCursorSpelling(clang.Cursor_getArgument(cursor, i)).ToString(),
                     Type = TypeInfo.FromClangType(clang.getArgType(funcType, i))
                 });
-
+            
             // already found? continue
             // TODO: error checking?
             if (ExternFunctions.ContainsKey(info.Name))

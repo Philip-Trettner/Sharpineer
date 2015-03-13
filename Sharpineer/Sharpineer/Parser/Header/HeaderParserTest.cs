@@ -162,5 +162,20 @@ namespace Sharpineer.Parser.Header
                 // Assert.That(!funcs.ContainsKey("nofoo"));
             }
         }
+
+
+        [Test]
+        public void FuncWindows()
+        {
+            var parser = new HeaderParser("Windows.h");
+            parser.Parse();
+            
+            var funcs = parser.ExternFunctions;
+            Assert.That(funcs.ContainsKey("GetWindowTextA"));
+
+            var f = funcs["GetWindowTextA"];
+            Assert.AreEqual("GetWindowTextA", f.Name);
+            Assert.AreEqual(3, f.Parameters.Count);
+        }
     }
 }
