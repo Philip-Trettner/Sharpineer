@@ -55,6 +55,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HINSTANCE Null => new HINSTANCE { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -62,6 +64,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HRGN Null => new HRGN { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -69,6 +73,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HWINSTA Null => new HWINSTA { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -76,6 +82,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HKL Null => new HKL { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -83,6 +91,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HWND Null => new HWND { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -90,6 +100,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HHOOK Null => new HHOOK { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -97,6 +109,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HACCEL Null => new HACCEL { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -104,6 +118,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HBITMAP Null => new HBITMAP { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -111,6 +127,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HBRUSH Null => new HBRUSH { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -118,6 +136,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HDC Null => new HDC { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -125,6 +145,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HDESK Null => new HDESK { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -132,6 +154,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HICON Null => new HICON { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -139,6 +163,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HMENU Null => new HMENU { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -146,6 +172,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HWINEVENTHOOK Null => new HWINEVENTHOOK { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -153,6 +181,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HMONITOR Null => new HMONITOR { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -570,6 +600,31 @@ namespace User32Dll
         [FieldOffset(32)]
         public DISPLAYCONFIG_2DREGION totalSize;
     
+        [FieldOffset(40)]
+        public uint /* UINT32 */ videoStandard;
+    
+        [FieldOffset(0)]
+        public uint /* UINT32 */ vSyncFreqDivider;
+    
+        [FieldOffset(0)]
+        public uint /* UINT32 */ reserved;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(40)]
+        public DISPLAYCONFIG_VIDEO_SIGNAL_INFO::(anonymous struct at C:\Program Files (x86)\Windows Kits\8.1\include\um\wingdi.h:2839:9) /* struct (anonymous struct at C:\Program Files (x86)\Windows Kits\8.1\include\um\wingdi.h:2839:9) */ AdditionalSignalInfo;
+    
+        [FieldOffset(40)]
+        public uint /* UINT32 */ videoStandard;
+    
+        [FieldOffset(0)]
+        public uint /* UINT32 */ vSyncFreqDivider;
+    
+        [FieldOffset(0)]
+        public uint /* UINT32 */ reserved;
+    
+        [FieldOffset(40)]
+        public uint /* UINT32 */ videoStandard;
+    
         [FieldOffset(44)]
         public DISPLAYCONFIG_SCANLINE_ORDERING scanLineOrdering;
     }
@@ -772,11 +827,13 @@ namespace User32Dll
         [FieldOffset(48)]
         public HBRUSH /* HBRUSH */ hbrBackground;
     
+        [MarshalAs(UnmanagedType.LPTStr)]
         [FieldOffset(56)]
-        public IntPtr /* const char *, LPCSTR */ lpszMenuName;
+        public string /* const char *, LPCSTR */ lpszMenuName;
     
+        [MarshalAs(UnmanagedType.LPTStr)]
         [FieldOffset(64)]
-        public IntPtr /* const char *, LPCSTR */ lpszClassName;
+        public string /* const char *, LPCSTR */ lpszClassName;
     
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(72)]
@@ -817,11 +874,13 @@ namespace User32Dll
         [FieldOffset(48)]
         public HBRUSH /* HBRUSH */ hbrBackground;
     
+        [MarshalAs(UnmanagedType.LPWStr)]
         [FieldOffset(56)]
-        public IntPtr /* const wchar_t *, LPCWSTR */ lpszMenuName;
+        public string /* const wchar_t *, LPCWSTR */ lpszMenuName;
     
+        [MarshalAs(UnmanagedType.LPWStr)]
         [FieldOffset(64)]
-        public IntPtr /* const wchar_t *, LPCWSTR */ lpszClassName;
+        public string /* const wchar_t *, LPCWSTR */ lpszClassName;
     
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(72)]
@@ -859,11 +918,13 @@ namespace User32Dll
         [FieldOffset(48)]
         public HBRUSH /* HBRUSH */ hbrBackground;
     
+        [MarshalAs(UnmanagedType.LPTStr)]
         [FieldOffset(56)]
-        public IntPtr /* const char *, LPCSTR */ lpszMenuName;
+        public string /* const char *, LPCSTR */ lpszMenuName;
     
+        [MarshalAs(UnmanagedType.LPTStr)]
         [FieldOffset(64)]
-        public IntPtr /* const char *, LPCSTR */ lpszClassName;
+        public string /* const char *, LPCSTR */ lpszClassName;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -897,11 +958,13 @@ namespace User32Dll
         [FieldOffset(48)]
         public HBRUSH /* HBRUSH */ hbrBackground;
     
+        [MarshalAs(UnmanagedType.LPWStr)]
         [FieldOffset(56)]
-        public IntPtr /* const wchar_t *, LPCWSTR */ lpszMenuName;
+        public string /* const wchar_t *, LPCWSTR */ lpszMenuName;
     
+        [MarshalAs(UnmanagedType.LPWStr)]
         [FieldOffset(64)]
-        public IntPtr /* const wchar_t *, LPCWSTR */ lpszClassName;
+        public string /* const wchar_t *, LPCWSTR */ lpszClassName;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1127,6 +1190,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HTOUCHINPUT Null => new HTOUCHINPUT { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1307,17 +1372,20 @@ namespace User32Dll
         [FieldOffset(16)]
         public HINSTANCE /* HINSTANCE */ hInstance;
     
+        [MarshalAs(UnmanagedType.LPTStr)]
         [FieldOffset(24)]
-        public IntPtr /* const char *, LPCSTR */ lpszText;
+        public string /* const char *, LPCSTR */ lpszText;
     
+        [MarshalAs(UnmanagedType.LPTStr)]
         [FieldOffset(32)]
-        public IntPtr /* const char *, LPCSTR */ lpszCaption;
+        public string /* const char *, LPCSTR */ lpszCaption;
     
         [FieldOffset(40)]
         public uint /* DWORD */ dwStyle;
     
+        [MarshalAs(UnmanagedType.LPTStr)]
         [FieldOffset(48)]
-        public IntPtr /* const char *, LPCSTR */ lpszIcon;
+        public string /* const char *, LPCSTR */ lpszIcon;
     
         [FieldOffset(56)]
         public ulong /* DWORD_PTR */ dwContextHelpId;
@@ -1343,17 +1411,20 @@ namespace User32Dll
         [FieldOffset(16)]
         public HINSTANCE /* HINSTANCE */ hInstance;
     
+        [MarshalAs(UnmanagedType.LPWStr)]
         [FieldOffset(24)]
-        public IntPtr /* const wchar_t *, LPCWSTR */ lpszText;
+        public string /* const wchar_t *, LPCWSTR */ lpszText;
     
+        [MarshalAs(UnmanagedType.LPWStr)]
         [FieldOffset(32)]
-        public IntPtr /* const wchar_t *, LPCWSTR */ lpszCaption;
+        public string /* const wchar_t *, LPCWSTR */ lpszCaption;
     
         [FieldOffset(40)]
         public uint /* DWORD */ dwStyle;
     
+        [MarshalAs(UnmanagedType.LPWStr)]
         [FieldOffset(48)]
-        public IntPtr /* const wchar_t *, LPCWSTR */ lpszIcon;
+        public string /* const wchar_t *, LPCWSTR */ lpszIcon;
     
         [FieldOffset(56)]
         public ulong /* DWORD_PTR */ dwContextHelpId;
@@ -1729,6 +1800,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HRAWINPUT Null => new HRAWINPUT { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1829,6 +1902,22 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public RAWHID /* RAWHID */ hid;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(24)]
+        public RAWINPUT::(anonymous union at C:\Program Files (x86)\Windows Kits\8.1\include\um\winuser.h:14302:5) /* union (anonymous union at C:\Program Files (x86)\Windows Kits\8.1\include\um\winuser.h:14302:5) */ data;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(0)]
+        public RAWMOUSE /* RAWMOUSE */ mouse;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(0)]
+        public RAWKEYBOARD /* RAWKEYBOARD */ keyboard;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(0)]
+        public RAWHID /* RAWHID */ hid;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1873,6 +1962,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HGESTUREINFO Null => new HGESTUREINFO { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1926,6 +2017,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HCONVLIST Null => new HCONVLIST { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1933,6 +2026,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HCONV Null => new HCONV { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1940,6 +2035,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HSZ Null => new HSZ { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1947,6 +2044,8 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public IntPtr handle;
+    
+        public static HDDEDATA Null => new HDDEDATA { handle = IntPtr.Zero };
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]

@@ -20,8 +20,8 @@ namespace Sharpineer.Parser.Header
         /// </summary>
         public long Offset = -1;
         
-        public string RefQualifier => Type.PointerType != null && !(Type.PointerType.StructInfo?.IsHandle ?? false) ? "ref " : "";
-        public string FunctionArg => (Type.MarshalAs?.Length == 0 ? "" : Type.MarshalAs + " ") + RefQualifier + Type.DecoratedCSharpType + " @" + Name;
+        public string RefQualifier => Type.RequiresRef ? "ref " : "";
+        public string FunctionArg => ((Type.MarshalAs?.Length ?? 0) == 0 ? "" : Type.MarshalAs + " ") + RefQualifier + Type.DecoratedCSharpType + " @" + Name;
 
         public string OffsetAttribute => string.Format("[FieldOffset({0})]", Offset / 8);
 

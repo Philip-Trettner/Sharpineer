@@ -78,10 +78,10 @@ namespace Sharpineer.Parser.Header
         {
             get
             {
-                yield return DllImportString;
+                yield return "    "+ DllImportString;
                 if (ReturnType.CSharpType == "bool")
-                    yield return "[return: MarshalAs(UnmanagedType.Bool)]";
-                yield return FunctionDeclaration;
+                    yield return "    [return: MarshalAs(UnmanagedType.Bool)]";
+                yield return "    " + FunctionDeclaration;
             }
         }
     }

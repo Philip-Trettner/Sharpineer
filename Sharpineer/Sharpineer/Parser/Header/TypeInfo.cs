@@ -33,6 +33,7 @@ namespace Sharpineer.Parser.Header
         public string MarshalAs;
 
         public bool RequiresUnicode = false;
+        public bool RequiresRef = false;
 
         public bool IsConst = false;
 
@@ -82,6 +83,7 @@ namespace Sharpineer.Parser.Header
         private void InitType()
         {
             CSharpType = null;
+            RequiresRef = false;
             TypeComment = "";
             switch (OriginalName)
             {
@@ -143,27 +145,39 @@ namespace Sharpineer.Parser.Header
                             switch (Type)
                             {
                                 case CXTypeKind.CXType_Pointer:
+                                    RequiresRef = true;
                                     if (PointerType.Type == CXTypeKind.CXType_Record)
                                     {
                                         CSharpType = PointerType.NonConstName.ToCSharpName();
                                         MarshalAs = "[MarshalAs(UnmanagedType.LPStruct)]";
                                     }
-                                    else if (PointerType.Name == "wchar_t")
+                                    else if (PointerType.NonConstName == "wchar_t")
                                     {
                                         CSharpType = "string";
                                         TypeComment = Name + ", " + OriginalName;
                                         MarshalAs = "[MarshalAs(UnmanagedType.LPWStr)]";
+                                        RequiresRef = false;
                                     }
-                                    else if (PointerType.Name == "char")
+                                    else if (PointerType.NonConstName == "char")
                                     {
                                         CSharpType = "string";
                                         TypeComment = Name + ", " + OriginalName;
                                         MarshalAs = "[MarshalAs(UnmanagedType.LPTStr)]";
+                                        RequiresRef = false;
                                     }
+                                    /*else if (PointerType.Type >= CXTypeKind.CXType_FirstBuiltin &&
+                                        PointerType.Type <= CXTypeKind.CXType_LastBuiltin &&
+                                        PointerType.Type != CXTypeKind.CXType_Void)
+                                    {
+                                        CSharpType = PointerType.CSharpType;
+                                        TypeComment = Name + ", " + OriginalName;
+                                    }*/
+                                    // int* could be "ref int" or "IntPtr"
                                     else
                                     {
                                         CSharpType = "IntPtr";
                                         TypeComment = Name + ", " + OriginalName;
+                                        RequiresRef = false;
                                     }
                                     break;
 
@@ -245,6 +259,7 @@ namespace Sharpineer.Parser.Header
                 if (PointerType?.StructInfo?.IsHandle ?? false)
                 {
                     MarshalAs = "[MarshalAs(UnmanagedType.Struct)]";
+                    RequiresRef = false;
                 }
             }
         }

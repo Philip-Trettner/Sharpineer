@@ -64,6 +64,8 @@ namespace Sharpineer.Parser.Header
                 {
                     yield return "    [FieldOffset(0)]";
                     yield return "    public IntPtr handle;";
+                    yield return "";
+                    yield return string.Format("    public static {0} Null => new {0} {{ handle = IntPtr.Zero }};", CSharpName);
                 }
                 else
                 {
