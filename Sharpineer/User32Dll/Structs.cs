@@ -603,28 +603,6 @@ namespace User32Dll
         [FieldOffset(40)]
         public uint /* UINT32 */ videoStandard;
     
-        [FieldOffset(0)]
-        public uint /* UINT32 */ vSyncFreqDivider;
-    
-        [FieldOffset(0)]
-        public uint /* UINT32 */ reserved;
-    
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(40)]
-        public DISPLAYCONFIG_VIDEO_SIGNAL_INFO::(anonymous struct at C:\Program Files (x86)\Windows Kits\8.1\include\um\wingdi.h:2839:9) /* struct (anonymous struct at C:\Program Files (x86)\Windows Kits\8.1\include\um\wingdi.h:2839:9) */ AdditionalSignalInfo;
-    
-        [FieldOffset(40)]
-        public uint /* UINT32 */ videoStandard;
-    
-        [FieldOffset(0)]
-        public uint /* UINT32 */ vSyncFreqDivider;
-    
-        [FieldOffset(0)]
-        public uint /* UINT32 */ reserved;
-    
-        [FieldOffset(40)]
-        public uint /* UINT32 */ videoStandard;
-    
         [FieldOffset(44)]
         public DISPLAYCONFIG_SCANLINE_ORDERING scanLineOrdering;
     }
@@ -1890,22 +1868,6 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public RAWINPUTHEADER /* RAWINPUTHEADER */ header;
-    
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(0)]
-        public RAWMOUSE /* RAWMOUSE */ mouse;
-    
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(0)]
-        public RAWKEYBOARD /* RAWKEYBOARD */ keyboard;
-    
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(0)]
-        public RAWHID /* RAWHID */ hid;
-    
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(24)]
-        public RAWINPUT::(anonymous union at C:\Program Files (x86)\Windows Kits\8.1\include\um\winuser.h:14302:5) /* union (anonymous union at C:\Program Files (x86)\Windows Kits\8.1\include\um\winuser.h:14302:5) */ data;
     
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]

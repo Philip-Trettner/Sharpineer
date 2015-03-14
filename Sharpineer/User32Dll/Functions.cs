@@ -1338,7 +1338,7 @@ namespace User32Dll
         public static extern bool PtInRect([MarshalAs(UnmanagedType.LPStruct)] ref RECT /* const RECT * */ @lprc, [MarshalAs(UnmanagedType.Struct)] POINT /* POINT */ @pt);
     
         [DllImport("User32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern int /* LONG */ QueryDisplayConfig(uint /* UINT32 */ @flags, IntPtr /* unsigned int *, UINT32 * */ @numPathArrayElements, [MarshalAs(UnmanagedType.LPStruct)] ref DISPLAYCONFIG_PATH_INFO @pathArray, IntPtr /* unsigned int *, UINT32 * */ @numModeInfoArrayElements, [MarshalAs(UnmanagedType.LPStruct)] ref DISPLAYCONFIG_MODE_INFO @modeInfoArray, IntPtr /* DISPLAYCONFIG_TOPOLOGY_ID *, DISPLAYCONFIG_TOPOLOGY_ID * */ @currentTopologyId);
+        public static extern int /* LONG */ QueryDisplayConfig(uint /* UINT32 */ @flags, IntPtr /* unsigned int *, UINT32 * */ @numPathArrayElements, [MarshalAs(UnmanagedType.LPArray)] DISPLAYCONFIG_PATH_INFO[] @pathArray, IntPtr /* unsigned int *, UINT32 * */ @numModeInfoArrayElements, [MarshalAs(UnmanagedType.LPArray)] DISPLAYCONFIG_MODE_INFO[] @modeInfoArray, IntPtr /* DISPLAYCONFIG_TOPOLOGY_ID *, DISPLAYCONFIG_TOPOLOGY_ID * */ @currentTopologyId);
     
         [DllImport("User32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         public static extern HWND /* HWND */ RealChildWindowFromPoint([MarshalAs(UnmanagedType.Struct)] HWND /* HWND */ @hwndParent, [MarshalAs(UnmanagedType.Struct)] POINT /* POINT */ @ptParentClientCoords);
@@ -1481,7 +1481,7 @@ namespace User32Dll
         public static extern void SetDebugErrorLevel(uint /* DWORD */ @dwLevel);
     
         [DllImport("User32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern int /* LONG */ SetDisplayConfig(uint /* UINT32 */ @numPathArrayElements, [MarshalAs(UnmanagedType.LPStruct)] ref DISPLAYCONFIG_PATH_INFO @pathArray, uint /* UINT32 */ @numModeInfoArrayElements, [MarshalAs(UnmanagedType.LPStruct)] ref DISPLAYCONFIG_MODE_INFO @modeInfoArray, uint /* UINT32 */ @flags);
+        public static extern int /* LONG */ SetDisplayConfig(uint /* UINT32 */ @numPathArrayElements, [MarshalAs(UnmanagedType.LPArray)] DISPLAYCONFIG_PATH_INFO[] @pathArray, uint /* UINT32 */ @numModeInfoArrayElements, [MarshalAs(UnmanagedType.LPArray)] DISPLAYCONFIG_MODE_INFO[] @modeInfoArray, uint /* UINT32 */ @flags);
     
         [DllImport("User32.dll", CharSet = CharSet.Auto, SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]

@@ -155,11 +155,14 @@ namespace Sharpineer.Parser.Header
             };
             var argc = clang.getNumArgTypes(funcType);
             for (uint i = 0; i < argc; ++i)
+            {
+                var argName = clang.getCursorSpelling(clang.Cursor_getArgument(cursor, i)).ToString();
                 info.Parameters.Add(new ArgumentInfo()
                 {
-                    Name = clang.getCursorSpelling(clang.Cursor_getArgument(cursor, i)).ToString(),
-                    Type = TypeInfo.FromClangType(clang.getArgType(funcType, i))
+                    Name = argName,
+                    Type = TypeInfo.FromClangType(clang.getArgType(funcType, i), argName)
                 });
+            }
 
             // ignore anon args
             if (info.HasUnnamedParameter)

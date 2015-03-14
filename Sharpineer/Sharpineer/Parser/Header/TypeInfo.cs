@@ -50,7 +50,7 @@ namespace Sharpineer.Parser.Header
         public string DecoratedCSharpType
             => string.IsNullOrEmpty(TypeComment) ? CSharpType : CSharpType + " /* " + TypeComment + " */";
 
-        public static TypeInfo FromClangType(CXType type)
+        public static TypeInfo FromClangType(CXType type, string argName = "")
         {
             var cantype = clang.getCanonicalType(type);
             var isConst = clang.isConstQualifiedType(cantype) != 0;
@@ -75,12 +75,12 @@ namespace Sharpineer.Parser.Header
                     info.PointerType = FromClangType(clang.getPointeeType(cantype));
                     break;
             }
-            info.InitType();
+            info.InitType(argName);
             return info;
         }
 
 
-        private void InitType()
+        private void InitType(string argName)
         {
             CSharpType = null;
             RequiresRef = false;
@@ -150,6 +150,12 @@ namespace Sharpineer.Parser.Header
                                     {
                                         CSharpType = PointerType.NonConstName.ToCSharpName();
                                         MarshalAs = "[MarshalAs(UnmanagedType.LPStruct)]";
+                                        if (argName?.ToLower().Contains("array") ?? false)
+                                        {
+                                            RequiresRef = false;
+                                            MarshalAs = "[MarshalAs(UnmanagedType.LPArray)]";
+                                            CSharpType += "[]";
+                                        }
                                     }
                                     else if (PointerType.NonConstName == "wchar_t")
                                     {
@@ -258,8 +264,11 @@ namespace Sharpineer.Parser.Header
                 // handles
                 if (PointerType?.StructInfo?.IsHandle ?? false)
                 {
-                    MarshalAs = "[MarshalAs(UnmanagedType.Struct)]";
-                    RequiresRef = false;
+                    if (!CSharpType.EndsWith("[]"))
+                    {
+                        MarshalAs = "[MarshalAs(UnmanagedType.Struct)]";
+                        RequiresRef = false;
+                    }
                 }
             }
         }
