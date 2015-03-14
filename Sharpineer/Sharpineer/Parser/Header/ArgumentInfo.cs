@@ -15,5 +15,27 @@ namespace Sharpineer.Parser.Header
         public TypeInfo Type;
 
         public override string ToString() => Name + ": " + Type;
+
+        /// <summary>
+        /// Returns list of converter members
+        /// </summary>
+        public IEnumerable<string> Converters
+        {
+            get
+            {
+                foreach (var converter in Type.Converters)
+                    switch (converter)
+                    {
+                        case TypeConverter.AsciiEncoder:
+                            yield return string.Format("public string {0}Str => Encoding.ASCII.GetString({0});", Name);
+                            break;
+                        case TypeConverter.WCharEncoder:
+                            yield return string.Format("public string {0}Str => Encoding.Unicode.GetString({0});", Name);
+                            break;
+                        default:
+                            throw new ArgumentOutOfRangeException();
+                    }
+            }
+        }
     }
 }

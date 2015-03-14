@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using NUnit.Framework;
 using Sharpineer.Parser.Dll;
 using Sharpineer.Parser.Header;
@@ -36,6 +37,9 @@ namespace Sharpineer.Parser
 
             File.WriteAllLines(@"C:\Temp\userfuncs.txt", userFuncs.OrderBy(f => f.Name).Select(f => f.Name + "(" + (f.Parameters.Count == 0 ? " " : f.Parameters.Select(p => p.ToString()).Aggregate((s1, s2) => s1 + ", " + s2)) + ") -> " + f.ReturnType));
 
+            var win32fd = hparser.Structs.FirstOrDefault(s => s.Value.CSharpName == "Win32FindDataa").Value;
+            Assert.IsNotNull(win32fd);
+
             var list = new List<string>();
             foreach (var func in userFuncs.OrderBy(f => f.Name))
             {
@@ -43,6 +47,14 @@ namespace Sharpineer.Parser
                 list.Add(func.DllImportString);
                 list.Add(func.FunctionDeclaration);
             }
+            list.Add("");
+            list.Add("");
+            foreach (var @struct in hparser.Structs.Values)
+            {
+                list.Add("");
+                list.AddRange(@struct.CSharpDefinition);
+            }
+
             File.WriteAllLines(@"C:\Temp\userfuncs-sharp.txt", list);
         }
     }

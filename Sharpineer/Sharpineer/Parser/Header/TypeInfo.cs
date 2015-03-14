@@ -2,12 +2,19 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ClangSharp;
 
 namespace Sharpineer.Parser.Header
 {
+    public enum TypeConverter
+    {
+        AsciiEncoder,
+        WCharEncoder
+    }
+
     /// <summary>
     /// Type information
     /// </summary>
@@ -20,9 +27,18 @@ namespace Sharpineer.Parser.Header
         public string CSharpType;
         public string TypeComment;
 
+        public string MarshalAs;
+
         public bool RequiresUnicode = false;
 
         public EnumInfo EnumType; // if Type == Enum
+
+        public TypeInfo ArrayElementType; // if Type == XyzArray
+        public long ArraySize = -1;
+
+        public TypeInfo PointerType;
+
+        public readonly List<TypeConverter> Converters = new List<TypeConverter>();
 
         public string DecoratedCSharpType
             => string.IsNullOrEmpty(TypeComment) ? CSharpType : CSharpType + " /* " + TypeComment + " */";
@@ -36,9 +52,24 @@ namespace Sharpineer.Parser.Header
                 OriginalName = clang.getTypeSpelling(type).ToString(),
                 Type = cantype.kind
             };
+            switch (info.Type)
+            {
+                case CXTypeKind.CXType_ConstantArray:
+                case CXTypeKind.CXType_DependentSizedArray:
+                case CXTypeKind.CXType_IncompleteArray:
+                case CXTypeKind.CXType_VariableArray:
+                    info.ArrayElementType = FromClangType(clang.getArrayElementType(cantype));
+                    info.ArraySize = clang.getArraySize(cantype);
+                    break;
+
+                case CXTypeKind.CXType_Pointer:
+                    info.PointerType = FromClangType(clang.getPointeeType(cantype));
+                    break;
+            }
             info.InitType();
             return info;
         }
+
 
         private void InitType()
         {
@@ -48,6 +79,10 @@ namespace Sharpineer.Parser.Header
             {
                 case "BOOL":
                     CSharpType = "bool";
+                    break;
+
+                case "BYTE":
+                    CSharpType = "byte";
                     break;
 
                 default:
@@ -62,6 +97,10 @@ namespace Sharpineer.Parser.Header
                         case "int":
                         case "long":
                             CSharpType = "int";
+                            break;
+
+                        case "unsigned char":
+                            CSharpType = "byte";
                             break;
 
                         case "unsigned":
@@ -98,15 +137,52 @@ namespace Sharpineer.Parser.Header
                             break;
 
                         default:
-                            if (Type == CXTypeKind.CXType_Pointer)
+                            switch (Type)
                             {
-                                CSharpType = "IntPtr";
-                                TypeComment = Name;
-                            }
-                            else
-                            {
-                                CSharpType = "UNKNOWN"; // unknown type
-                                TypeComment = Name + ", " + OriginalName;
+                                case CXTypeKind.CXType_Pointer:
+                                    if (PointerType.Type == CXTypeKind.CXType_Record)
+                                    {
+                                        CSharpType = StructInfo.CSharpNameOf(PointerType.Name);
+                                        MarshalAs = "[MarshalAs(UnmanagedType.LPStruct)]";
+                                    }
+                                    else
+                                    {
+                                        CSharpType = "IntPtr";
+                                        TypeComment = Name;
+                                    }
+                                    break;
+
+                                case CXTypeKind.CXType_Record:
+                                    // direct struct has C# version
+                                    CSharpType = StructInfo.CSharpNameOf(Name);
+                                    MarshalAs = "[MarshalAs(UnmanagedType.Struct)]";
+                                    break;
+
+                                case CXTypeKind.CXType_ConstantArray:
+                                    Debug.Assert(ArrayElementType != null);
+                                    MarshalAs = string.Format("[MarshalAs(UnmanagedType.ByValArray, SizeConst = {0})]", ArraySize);
+                                    CSharpType = ArrayElementType.CSharpType + "[]";
+                                    if (string.IsNullOrEmpty(ArrayElementType.TypeComment))
+                                        TypeComment = string.Format("{0} [{1}]", ArrayElementType.TypeComment, ArraySize);
+
+                                    // special case: chars
+                                    if (ArrayElementType.Name == "char")
+                                    {
+                                        CSharpType = "byte[]";
+                                        Converters.Add(TypeConverter.AsciiEncoder);
+                                    }
+
+                                    // char arrays
+                                    if (ArrayElementType.Name == "wchar_t")
+                                    {
+                                        Converters.Add(TypeConverter.WCharEncoder);
+                                    }
+                                    break;
+
+                                default:
+                                    CSharpType = "UNKNOWN"; // unknown type
+                                    TypeComment = Name + ", " + OriginalName;
+                                    break;
                             }
                             break;
                     }
