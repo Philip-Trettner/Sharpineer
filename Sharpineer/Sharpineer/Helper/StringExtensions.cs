@@ -30,5 +30,16 @@ namespace Sharpineer.Helper
                 name = name.Split('_').Select(s => s.Capitalize()).Aggregate((s1, s2) => s1 + s2);
             return name;
         }
+
+        public static string ToCSharpName(this string name, bool removeTag = true)
+        {
+            // remove leading "tag"
+            if (name.StartsWith("tag") && name.Length > 3 && char.IsUpper(name[3]))
+                name = name.Substring(3);
+            // trim ' ', '_'
+            name = name.Trim(' ', '_');
+
+            return name;
+        }
     }
 }

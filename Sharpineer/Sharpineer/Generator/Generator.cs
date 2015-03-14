@@ -24,7 +24,7 @@ namespace Sharpineer.Generator
 
             if (includeWindows)
             {
-                Headers.Add("Windows.h");
+                Headers.Add(@"C:\Program Files (x86)\Windows Kits\8.1\Include\um\windows.h");
                 DllNames.Add("User32.dll", @"c:\windows\system32\user32.dll");
             }
         }
@@ -78,7 +78,7 @@ namespace Sharpineer.Generator
                 foreach (var @struct in hparser.Structs.Values)
                 {
                     // ignore non-referenced structs
-                    if (!@struct.ReferencedDlls.Any(dllparser.ContainsKey))
+                    if (!@struct.ReferencedDlls.Any(d => d != null && dllparser.ContainsKey(d)))
                         continue;
 
                     if (structs.Count > 0)
@@ -90,7 +90,7 @@ namespace Sharpineer.Generator
                 foreach (var @enum in hparser.Enums.Values)
                 {
                     // ignore non-referenced enums
-                    if (!@enum.ReferencedDlls.Any(dllparser.ContainsKey))
+                    if (!@enum.ReferencedDlls.Any(d => d != null && dllparser.ContainsKey(d)))
                         continue;
 
                     if (enums.Count > 0)

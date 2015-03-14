@@ -77,7 +77,17 @@ namespace Sharpineer.Parser.Header
         public void Parse()
         {
             // setup files
-            var args = new List<string> { "-x", "c++", "-I./" };
+            var args = new List<string>
+            {
+                "-x",
+                "c++",
+                "-I./",
+                "-DWIN32",
+                "-D_DEBUG",
+                "-D_CONSOLE",
+                "-D_UNICODE",
+                "-DUNICODE"
+            };
             var tmpfile = Path.GetTempFileName();
             var lines = HeaderFiles.Select(header => "#include \"" + header + "\"").ToList();
             File.WriteAllLines(tmpfile, lines);
@@ -105,12 +115,21 @@ namespace Sharpineer.Parser.Header
 
             // visit enums
             clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitEnums, new CXClientData(IntPtr.Zero));
+            clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitEnumTypedefs, new CXClientData(IntPtr.Zero));
 
             // visit extern functions
             clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitExternFunctions, new CXClientData(IntPtr.Zero));
 
             // visit structs
             clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitStructs, new CXClientData(IntPtr.Zero));
+
+            // resolve
+            foreach (var info in Enums.Values)
+                info.AddReference(null, this);
+            foreach (var info in ExternFunctions.Values)
+                info.AddReference(null, this);
+            foreach (var info in Structs.Values)
+                info.AddReference(null, this);
 
             // cleanup
             clang.disposeIndex(index);
@@ -179,17 +198,61 @@ namespace Sharpineer.Parser.Header
 
                 var fieldType = clang.getCursorType(cxCursor);
                 var fieldName = clang.getCursorSpelling(cxCursor).ToString();
+                var offset = clang.Type_getOffsetOf(structType, fieldName);
 
                 info.Members.Add(new ArgumentInfo()
                 {
                     Name = fieldName,
-                    Type = TypeInfo.FromClangType(fieldType)
+                    Type = TypeInfo.FromClangType(fieldType),
+                    Offset = offset
                 });
 
                 return CXChildVisitResult.CXChildVisit_Recurse;
             }, new CXClientData(IntPtr.Zero));
 
             // recurse
+            return CXChildVisitResult.CXChildVisit_Continue;
+        }
+
+        public CXChildVisitResult VisitEnumTypedefs(CXCursor cursor, CXCursor parent, IntPtr data)
+        {
+            // check for enums
+            var curKind = clang.getCursorKind(cursor);
+            if (curKind != CXCursorKind.CXCursor_TypedefDecl) return CXChildVisitResult.CXChildVisit_Recurse;
+
+            var typedefType = clang.getCanonicalType( clang.getTypedefDeclUnderlyingType(cursor));
+            //Console.WriteLine("Typedef: " + clang.getCursorSpelling(cursor).ToString() + " - " + typedefType.kind);
+
+            if (typedefType.kind != CXTypeKind.CXType_Enum)
+                return CXChildVisitResult.CXChildVisit_Continue;
+
+            // typedef to enum here
+            var enumName = clang.getCursorSpelling(cursor).ToString();
+
+            // already found? continue
+            if (Enums.ContainsKey(enumName))
+                return CXChildVisitResult.CXChildVisit_Continue;
+            
+            var info = new EnumInfo
+            {
+                Name = enumName,
+                BaseType = "int"
+            };
+
+            // TODO: Namespaces
+
+            // collect enum values
+            clang.visitChildren(clang.getTypeDeclaration(typedefType), (cxCursor, _, __) =>
+            {
+                var valName = clang.getCursorSpelling(cxCursor).ToString();
+                var valValue = clang.getEnumConstantDeclValue(cxCursor);
+                info.Values.Add(valName, valValue);
+                return CXChildVisitResult.CXChildVisit_Continue;
+            }, new CXClientData(IntPtr.Zero));
+
+            // add enum
+            Enums.Add(info.Name, info);
+
             return CXChildVisitResult.CXChildVisit_Continue;
         }
 
@@ -232,16 +295,7 @@ namespace Sharpineer.Parser.Header
             //   so we have to find the sibling, and this is the only way I've found
             //   to do with libclang, maybe there is a better way?
             if (string.IsNullOrEmpty(enumName))
-            {
-                var forwardDeclaringVisitor = new ForwardDeclVisitor(cursor);
-                clang.visitChildren(clang.getCursorLexicalParent(cursor), forwardDeclaringVisitor.Visit, new CXClientData(IntPtr.Zero));
-                enumName = clang.getCursorSpelling(forwardDeclaringVisitor.ForwardDeclarationCursor).ToString();
-
-                if (string.IsNullOrEmpty(enumName))
-                {
-                    enumName = "_";
-                }
-            }
+                return CXChildVisitResult.CXChildVisit_Continue; // is explicitly handled
 
             // already found? continue
             if (Enums.ContainsKey(enumName))

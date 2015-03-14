@@ -33,7 +33,13 @@ namespace Sharpineer.Parser.Header
         /// <summary>
         /// Name of the struct for C# version
         /// </summary>
-        public string CSharpName => Name.ToCamelCaseCSharpName();
+        public string CSharpName => Name.ToCSharpName();
+
+        public bool IsHandle
+            => TypeInfo.Name.EndsWith("__") &&
+               Members.Count == 1 && 
+               Members[0].Name == "unused" &&
+               Members[0].Type.CSharpType == "int";
 
         public void AddReference(string dll, ITypeProvider typer)
         {
@@ -51,18 +57,28 @@ namespace Sharpineer.Parser.Header
         {
             get
             {
-                yield return "[StructLayout(LayoutKind.Sequential)]";
+                yield return "[StructLayout(LayoutKind.Explicit), Serializable]";
                 yield return string.Format("public struct {0} /* {1}, {2} */", CSharpName, Name, TypeInfo.OriginalName);
                 yield return "{";
-                foreach (var field in Members)
+                if (IsHandle)
                 {
-                    if (!string.IsNullOrEmpty(field.Type.MarshalAs))
-                        yield return "    " + field.Type.MarshalAs;
+                    yield return "    [FieldOffset(0)]";
+                    yield return "    public IntPtr handle;";
+                }
+                else
+                {
+                    foreach (var field in Members)
+                    {
+                        if (!string.IsNullOrEmpty(field.Type.MarshalAs))
+                            yield return "    " + field.Type.MarshalAs;
 
-                    yield return string.Format("    public {0} {1};", field.Type.DecoratedCSharpType, field.Name);
+                        yield return "    " + field.OffsetAttribute;
 
-                    foreach (var converter in field.Converters)
-                        yield return "    " + converter;
+                        yield return string.Format("    public {0} {1};", field.Type.DecoratedCSharpType, field.Name);
+
+                        foreach (var converter in field.Converters)
+                            yield return "    " + converter;
+                    }
                 }
                 yield return "}";
             }

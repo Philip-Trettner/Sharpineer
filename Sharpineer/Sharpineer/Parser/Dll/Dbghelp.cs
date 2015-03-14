@@ -96,7 +96,7 @@ namespace Sharpineer.Parser.Dll
         }
 
         public delegate bool SymEnumSymbolsProc(
-            [param: MarshalAs(UnmanagedType.Struct)]
+            [MarshalAs(UnmanagedType.Struct)]
             SYMBOL_INFO pSymInfo,
             UInt32 SymbolSize,
             IntPtr UserContext
@@ -105,7 +105,7 @@ namespace Sharpineer.Parser.Dll
         [DllImport("dbghelp.dll", EntryPoint = "SymInitializeW", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = true)]
         public static extern bool SymInitialize(
             IntPtr process,
-            [param: MarshalAs(UnmanagedType.LPTStr)]
+            [MarshalAs(UnmanagedType.LPTStr)]
             string searchPath,
             bool invadeProcess);
 
@@ -116,7 +116,7 @@ namespace Sharpineer.Parser.Dll
         public static extern bool SymEnumSymbols(
             IntPtr hProcess,
             UInt64 BaseOfDll,
-            [param: MarshalAs(UnmanagedType.LPTStr)]
+            [MarshalAs(UnmanagedType.LPTStr)]
             string Mask,
             SymEnumSymbolsProc EnumSymbolsCallback,
             IntPtr UserContext
@@ -125,13 +125,13 @@ namespace Sharpineer.Parser.Dll
         public static extern UInt64 SymLoadModuleEx(
                                         IntPtr hProcess,
                                         IntPtr hFile,
-                                    [param: MarshalAs(UnmanagedType.LPTStr)]
+                                    [MarshalAs(UnmanagedType.LPTStr)]
                                         string ImageName,
-                                    [param: MarshalAs(UnmanagedType.LPTStr)]
+                                    [MarshalAs(UnmanagedType.LPTStr)]
                                         string ModuleName,
                                         UInt64 BaseOfDll,
                                         uint DllSize,
-                                    [param: MarshalAs(UnmanagedType.LPStruct)]
+                                    [MarshalAs(UnmanagedType.LPStruct)]
                                         _MODLOAD_DATA Data,
                                         uint Flags
                                     );

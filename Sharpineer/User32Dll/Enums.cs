@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace User32Dll
 {
-    public enum SecurityImpersonationLevel /* _SECURITY_IMPERSONATION_LEVEL */
+    public enum SECURITY_IMPERSONATION_LEVEL /* _SECURITY_IMPERSONATION_LEVEL */
     {
         Anonymous = 0,
         Identification = 1,
@@ -15,95 +15,92 @@ namespace User32Dll
         Delegation = 3,
     }
     
-    public enum PointerButtonChangeType /* tagPOINTER_BUTTON_CHANGE_TYPE */
+    public enum DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY /* DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY */
     {
-        None = 0,
-        FirstbuttonDown = 1,
-        FirstbuttonUp = 2,
-        SecondbuttonDown = 3,
-        SecondbuttonUp = 4,
-        ThirdbuttonDown = 5,
-        ThirdbuttonUp = 6,
-        FourthbuttonDown = 7,
-        FourthbuttonUp = 8,
-        FifthbuttonDown = 9,
-        FifthbuttonUp = 10,
+        OTHER = -1,
+        HD15 = 0,
+        SVIDEO = 1,
+        COMPOSITE_VIDEO = 2,
+        COMPONENT_VIDEO = 3,
+        DVI = 4,
+        HDMI = 5,
+        LVDS = 6,
+        D_JPN = 8,
+        SDI = 9,
+        DISPLAYPORT_EXTERNAL = 10,
+        DISPLAYPORT_EMBEDDED = 11,
+        UDI_EXTERNAL = 12,
+        UDI_EMBEDDED = 13,
+        SDTVDONGLE = 14,
+        MIRACAST = 15,
+        INTERNAL = -2147483648,
+        FORCE_UINT32 = -1,
     }
     
-    public enum FeedbackType /* tagFEEDBACK_TYPE */
+    public enum DISPLAYCONFIG_SCANLINE_ORDERING /* DISPLAYCONFIG_SCANLINE_ORDERING */
     {
-        TouchContactvisualization = 1,
-        PenBarrelvisualization = 2,
-        PenTap = 3,
-        PenDoubletap = 4,
-        PenPressandhold = 5,
-        PenRighttap = 6,
-        TouchTap = 7,
-        TouchDoubletap = 8,
-        TouchPressandhold = 9,
-        TouchRighttap = 10,
-        GesturePressandtap = 11,
-        Max = -1,
+        UNSPECIFIED = 0,
+        PROGRESSIVE = 1,
+        INTERLACED = 2,
+        INTERLACED_UPPERFIELDFIRST = 2,
+        INTERLACED_LOWERFIELDFIRST = 3,
+        FORCE_UINT32 = -1,
     }
     
-    public enum PointerDeviceType /* tagPOINTER_DEVICE_TYPE */
+    public enum DISPLAYCONFIG_SCALING /* DISPLAYCONFIG_SCALING */
     {
-        IntegratedPen = 1,
-        ExternalPen = 2,
-        Touch = 3,
-        TouchPad = 4,
-        Max = -1,
+        IDENTITY = 1,
+        CENTERED = 2,
+        STRETCHED = 3,
+        ASPECTRATIOCENTEREDMAX = 4,
+        CUSTOM = 5,
+        PREFERRED = 128,
+        FORCE_UINT32 = -1,
     }
     
-    public enum PointerDeviceCursorType /* tagPOINTER_DEVICE_CURSOR_TYPE */
+    public enum DISPLAYCONFIG_ROTATION /* DISPLAYCONFIG_ROTATION */
     {
-        Unknown = 0,
-        Tip = 1,
-        Eraser = 2,
-        Max = -1,
+        IDENTITY = 1,
+        ROTATE90 = 2,
+        ROTATE180 = 3,
+        ROTATE270 = 4,
+        FORCE_UINT32 = -1,
     }
     
-    [Flags]
-    public enum InputMessageDeviceType /* tagINPUT_MESSAGE_DEVICE_TYPE */
+    public enum DISPLAYCONFIG_MODE_INFO_TYPE /* DISPLAYCONFIG_MODE_INFO_TYPE */
     {
-        Unavailable = 0,
-        Keyboard = 1,
-        Mouse = 2,
-        Touch = 4,
-        Pen = 8,
-        Touchpad = 16,
+        SOURCE = 1,
+        TARGET = 2,
+        FORCE_UINT32 = -1,
     }
     
-    [Flags]
-    public enum InputMessageOriginId /* tagINPUT_MESSAGE_ORIGIN_ID */
+    public enum DISPLAYCONFIG_PIXELFORMAT /* DISPLAYCONFIG_PIXELFORMAT */
     {
-        Unavailable = 0,
-        Hardware = 1,
-        Injected = 2,
-        System = 4,
+        PIXELFORMAT_8BPP = 1,
+        PIXELFORMAT_16BPP = 2,
+        PIXELFORMAT_24BPP = 3,
+        PIXELFORMAT_32BPP = 4,
+        PIXELFORMAT_NONGDI = 5,
+        PIXELFORMAT_FORCE_UINT32 = -1,
     }
     
-    [Flags]
-    public enum ArState /* tagAR_STATE */
+    public enum DISPLAYCONFIG_TOPOLOGY_ID /* DISPLAYCONFIG_TOPOLOGY_ID */
     {
-        Enabled = 0,
-        Disabled = 1,
-        Suppressed = 2,
-        Remotesession = 4,
-        Multimon = 8,
-        Nosensor = 16,
-        NotSupported = 32,
-        Docked = 64,
-        Laptop = 128,
+        INTERNAL = 1,
+        CLONE = 2,
+        EXTEND = 4,
+        EXTERNAL = 8,
+        FORCE_UINT32 = -1,
     }
     
-    [Flags]
-    public enum OrientationPreference /* ORIENTATION_PREFERENCE */
+    public enum DISPLAYCONFIG_DEVICE_INFO_TYPE /* DISPLAYCONFIG_DEVICE_INFO_TYPE */
     {
-        None = 0,
-        Landscape = 1,
-        Portrait = 2,
-        LandscapeFlipped = 4,
-        PortraitFlipped = 8,
+        GET_SOURCE_NAME = 1,
+        GET_TARGET_NAME = 2,
+        GET_TARGET_PREFERRED_MODE = 3,
+        GET_ADAPTER_NAME = 4,
+        SET_TARGET_PERSISTENCE = 5,
+        GET_TARGET_BASE_TYPE = 6,
+        FORCE_UINT32 = -1,
     }
 }

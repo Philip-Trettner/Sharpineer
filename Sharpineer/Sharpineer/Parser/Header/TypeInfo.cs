@@ -36,7 +36,8 @@ namespace Sharpineer.Parser.Header
 
         public bool IsConst = false;
 
-        public EnumInfo EnumType; // if Type == Enum
+        public EnumInfo EnumInfo; // if Type == Enum
+        public StructInfo StructInfo; // if Type == Record
 
         public TypeInfo ArrayElementType; // if Type == XyzArray
         public long ArraySize = -1;
@@ -138,18 +139,13 @@ namespace Sharpineer.Parser.Header
                             RequiresUnicode = true;
                             break;
 
-                        case "HWND__ *":
-                            CSharpType = "IntPtr";
-                            TypeComment = "HWND";
-                            break;
-
                         default:
                             switch (Type)
                             {
                                 case CXTypeKind.CXType_Pointer:
                                     if (PointerType.Type == CXTypeKind.CXType_Record)
                                     {
-                                        CSharpType = PointerType.NonConstName.ToCamelCaseCSharpName();
+                                        CSharpType = PointerType.NonConstName.ToCSharpName();
                                         MarshalAs = "[MarshalAs(UnmanagedType.LPStruct)]";
                                     }
                                     else
@@ -161,13 +157,13 @@ namespace Sharpineer.Parser.Header
 
                                 case CXTypeKind.CXType_Record:
                                     // direct struct has C# version
-                                    CSharpType = Name.ToCamelCaseCSharpName();
+                                    CSharpType = Name.ToCSharpName();
                                     MarshalAs = "[MarshalAs(UnmanagedType.Struct)]";
                                     break;
 
                                 case CXTypeKind.CXType_Enum:
                                     // enums
-                                    CSharpType = Name.ToCamelCaseCSharpName();
+                                    CSharpType = Name.ToCSharpName();
                                     break;
 
                                 case CXTypeKind.CXType_ConstantArray:
@@ -217,12 +213,25 @@ namespace Sharpineer.Parser.Header
             switch (Type)
             {
                 case CXTypeKind.CXType_Record:
-                    typer.QueryStruct(Name)?.AddReference(dll, typer);
+                    StructInfo = typer.QueryStruct(Name);
+                    StructInfo?.AddReference(dll, typer);
                     break;
 
                 case CXTypeKind.CXType_Enum:
-                    typer.QueryEnum(Name)?.AddReference(dll, typer);
+                    EnumInfo = typer.QueryEnum(Name);
+                    if (EnumInfo == null)
+                        Console.WriteLine("Missing " + Name);
+                    EnumInfo?.AddReference(dll, typer);
                     break;
+            }
+
+            // postprocess
+            {
+                // handles
+                if (PointerType?.StructInfo?.IsHandle ?? false)
+                {
+                    MarshalAs = "[MarshalAs(UnmanagedType.Struct)]";
+                }
             }
         }
     }

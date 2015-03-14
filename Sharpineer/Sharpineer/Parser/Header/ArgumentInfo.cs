@@ -14,6 +14,13 @@ namespace Sharpineer.Parser.Header
         public string Name;
         public TypeInfo Type;
 
+        /// <summary>
+        /// Offset for fields
+        /// </summary>
+        public long Offset = -1;
+
+        public string OffsetAttribute => string.Format("[FieldOffset({0})]", Offset / 8);
+
         public override string ToString() => Name + ": " + Type;
 
         /// <summary>
@@ -30,7 +37,7 @@ namespace Sharpineer.Parser.Header
                             yield return string.Format("public string {0}Str => Encoding.ASCII.GetString({0});", Name);
                             break;
                         case TypeConverter.WCharEncoder:
-                            yield return string.Format("public string {0}Str => Encoding.Unicode.GetString({0});", Name);
+                            yield return string.Format("public string {0}Str => new string({0});", Name);
                             break;
                         default:
                             throw new ArgumentOutOfRangeException();

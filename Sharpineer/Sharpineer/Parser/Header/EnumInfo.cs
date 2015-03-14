@@ -48,6 +48,12 @@ namespace Sharpineer.Parser.Header
                         break;
                     l = i;
                 }
+                while (Values.Keys.Any(k => char.IsDigit(k[l + 1])))
+                {
+                    --l;
+                    while (l > 0 && name[l] != '_')
+                        --l;
+                }
                 return l;
             }
         }
@@ -55,7 +61,7 @@ namespace Sharpineer.Parser.Header
         /// <summary>
         /// C# name
         /// </summary>
-        public string CSharpName => Name.ToCamelCaseCSharpName();
+        public string CSharpName => Name.ToCSharpName();
 
         /// <summary>
         /// True iff enum could be flags
@@ -77,7 +83,7 @@ namespace Sharpineer.Parser.Header
                 yield return string.Format("public enum {0} /* {1} */", CSharpName, Name);
                 yield return "{";
                 foreach (var value in Values)
-                    yield return string.Format("    {0} = {1},", value.Key.Substring(pl).ToCamelCaseCSharpName(), value.Value);
+                    yield return string.Format("    {0} = {1},", value.Key.Substring(pl).ToCSharpName(), value.Value);
                 yield return "}";
             }
         }
