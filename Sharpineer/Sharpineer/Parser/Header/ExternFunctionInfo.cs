@@ -60,7 +60,7 @@ namespace Sharpineer.Parser.Header
         /// <summary>
         /// C# Parameter string without braces
         /// </summary>
-        public string ParametersCSharpString => Parameters.Count == 0 ? "" : Parameters.Select(p => p.Type.DecoratedCSharpType + " @" + p.Name).Aggregate((s1, s2) => s1 + ", " + s2);
+        public string ParametersCSharpString => Parameters.Count == 0 ? "" : Parameters.Select(p => p.FunctionArg).Aggregate((s1, s2) => s1 + ", " + s2);
 
         /// <summary>
         /// C# Function declaration
@@ -72,6 +72,17 @@ namespace Sharpineer.Parser.Header
             ReturnType.AddReference(dll, typer);
             foreach (var arg in Parameters)
                 arg.AddReference(dll, typer);
+        }
+
+        public IEnumerable<string> CSharpDefinition
+        {
+            get
+            {
+                yield return DllImportString;
+                if (ReturnType.CSharpType == "bool")
+                    yield return "[return: MarshalAs(UnmanagedType.Bool)]";
+                yield return FunctionDeclaration;
+            }
         }
     }
 }

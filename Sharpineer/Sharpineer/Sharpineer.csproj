@@ -106,7 +106,6 @@
     <Compile Include="Parser\Header\ArgumentInfo.cs" />
     <Compile Include="Parser\Header\EnumInfo.cs" />
     <Compile Include="Parser\Header\ExternFunctionInfo.cs" />
-    <Compile Include="Parser\Header\ForwardDeclVisitor.cs" />
     <Compile Include="Parser\Header\HeaderParser.cs" />
     <Compile Include="Parser\Header\HeaderParserTest.cs" />
     <Compile Include="Parser\Header\StructInfo.cs" />

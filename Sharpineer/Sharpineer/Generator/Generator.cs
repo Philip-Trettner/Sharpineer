@@ -105,9 +105,9 @@ namespace Sharpineer.Generator
                     Where(f => !string.IsNullOrEmpty(f.DllName)).
                     OrderBy(f => f.Name))
                 {
-                    function.Add("");
-                    function.Add("    " + func.DllImportString);
-                    function.Add("    " + func.FunctionDeclaration);
+                    if (function.Count > 0)
+                        function.Add("");
+                    function.AddRange(func.CSharpDefinition);
                 }
                 function.Add("}");
             }

@@ -122,6 +122,7 @@ namespace Sharpineer.Parser.Header
 
             // visit structs
             clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitStructs, new CXClientData(IntPtr.Zero));
+            clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitStructTypedefs, new CXClientData(IntPtr.Zero));
 
             // resolve
             foreach (var info in Enums.Values)
@@ -160,6 +161,10 @@ namespace Sharpineer.Parser.Header
                     Type = TypeInfo.FromClangType(clang.getArgType(funcType, i))
                 });
 
+            // ignore anon args
+            if (info.HasUnnamedParameter)
+                return CXChildVisitResult.CXChildVisit_Continue;
+
             // already found? continue
             // TODO: error checking?
             if (ExternFunctions.ContainsKey(info.Name))
@@ -170,6 +175,54 @@ namespace Sharpineer.Parser.Header
 
             // recurse
             return CXChildVisitResult.CXChildVisit_Recurse;
+        }
+
+        public CXChildVisitResult VisitStructTypedefs(CXCursor cursor, CXCursor parent, IntPtr data)
+        {
+            // check for enums
+            var curKind = clang.getCursorKind(cursor);
+            if (curKind != CXCursorKind.CXCursor_TypedefDecl) return CXChildVisitResult.CXChildVisit_Recurse;
+
+            var structType = clang.getCanonicalType(clang.getTypedefDeclUnderlyingType(cursor));
+            //Console.WriteLine("Typedef: " + clang.getCursorSpelling(cursor).ToString() + " - " + typedefType.kind);
+
+            if (structType.kind != CXTypeKind.CXType_Record)
+                return CXChildVisitResult.CXChildVisit_Continue;
+
+            // typedef to enum here
+            var structName = clang.getCursorSpelling(cursor).ToString();
+
+            if (Structs.ContainsKey(structName))
+                return CXChildVisitResult.CXChildVisit_Continue;
+
+            var info = new StructInfo()
+            {
+                Name = structName,
+                TypeInfo = TypeInfo.FromClangType(structType)
+            };
+            Structs.Add(structName, info);
+
+            clang.visitChildren(clang.getTypeDeclaration(structType), (cxCursor, parent1, clientData) =>
+            {
+                var kind = clang.getCursorKind(cxCursor);
+                if (kind != CXCursorKind.CXCursor_FieldDecl) return CXChildVisitResult.CXChildVisit_Recurse;
+
+                var fieldType = clang.getCursorType(cxCursor);
+                var fieldName = clang.getCursorSpelling(cxCursor).ToString();
+                var offset = clang.Type_getOffsetOf(structType, fieldName);
+
+                info.Members.Add(new ArgumentInfo()
+                {
+                    Name = fieldName,
+                    Type = TypeInfo.FromClangType(fieldType),
+                    Offset = offset
+                });
+
+                return CXChildVisitResult.CXChildVisit_Recurse;
+            }, new CXClientData(IntPtr.Zero));
+
+            // recurse
+            return CXChildVisitResult.CXChildVisit_Continue;
         }
 
         public CXChildVisitResult VisitStructs(CXCursor cursor, CXCursor parent, IntPtr data)

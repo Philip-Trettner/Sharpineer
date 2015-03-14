@@ -148,10 +148,22 @@ namespace Sharpineer.Parser.Header
                                         CSharpType = PointerType.NonConstName.ToCSharpName();
                                         MarshalAs = "[MarshalAs(UnmanagedType.LPStruct)]";
                                     }
+                                    else if (PointerType.Name == "wchar_t")
+                                    {
+                                        CSharpType = "string";
+                                        TypeComment = Name + ", " + OriginalName;
+                                        MarshalAs = "[MarshalAs(UnmanagedType.LPWStr)]";
+                                    }
+                                    else if (PointerType.Name == "char")
+                                    {
+                                        CSharpType = "string";
+                                        TypeComment = Name + ", " + OriginalName;
+                                        MarshalAs = "[MarshalAs(UnmanagedType.LPTStr)]";
+                                    }
                                     else
                                     {
                                         CSharpType = "IntPtr";
-                                        TypeComment = Name;
+                                        TypeComment = Name + ", " + OriginalName;
                                     }
                                     break;
 
@@ -213,12 +225,14 @@ namespace Sharpineer.Parser.Header
             switch (Type)
             {
                 case CXTypeKind.CXType_Record:
-                    StructInfo = typer.QueryStruct(Name);
+                    StructInfo = typer.QueryStruct(NonConstName);
+                    if (StructInfo == null)
+                        Console.WriteLine("Missing " + Name);
                     StructInfo?.AddReference(dll, typer);
                     break;
 
                 case CXTypeKind.CXType_Enum:
-                    EnumInfo = typer.QueryEnum(Name);
+                    EnumInfo = typer.QueryEnum(NonConstName);
                     if (EnumInfo == null)
                         Console.WriteLine("Missing " + Name);
                     EnumInfo?.AddReference(dll, typer);

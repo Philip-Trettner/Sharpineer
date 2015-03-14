@@ -37,7 +37,7 @@ namespace Sharpineer.Parser.Header
 
         public bool IsHandle
             => TypeInfo.Name.EndsWith("__") &&
-               Members.Count == 1 && 
+               Members.Count == 1 &&
                Members[0].Name == "unused" &&
                Members[0].Type.CSharpType == "int";
 
@@ -67,8 +67,14 @@ namespace Sharpineer.Parser.Header
                 }
                 else
                 {
+                    var first = true;
                     foreach (var field in Members)
                     {
+                        if (first)
+                            first = false;
+                        else
+                            yield return "";
+
                         if (!string.IsNullOrEmpty(field.Type.MarshalAs))
                             yield return "    " + field.Type.MarshalAs;
 

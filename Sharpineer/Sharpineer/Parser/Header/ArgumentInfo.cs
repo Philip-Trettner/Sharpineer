@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,9 @@ namespace Sharpineer.Parser.Header
         /// Offset for fields
         /// </summary>
         public long Offset = -1;
+        
+        public string RefQualifier => Type.PointerType != null && !(Type.PointerType.StructInfo?.IsHandle ?? false) ? "ref " : "";
+        public string FunctionArg => (Type.MarshalAs?.Length == 0 ? "" : Type.MarshalAs + " ") + RefQualifier + Type.DecoratedCSharpType + " @" + Name;
 
         public string OffsetAttribute => string.Format("[FieldOffset({0})]", Offset / 8);
 

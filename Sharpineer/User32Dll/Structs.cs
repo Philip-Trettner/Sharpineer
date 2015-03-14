@@ -12,8 +12,26 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ LowPart;
+    
         [FieldOffset(4)]
         public int /* LONG */ HighPart;
+    }
+    
+    [StructLayout(LayoutKind.Explicit), Serializable]
+    public struct GUID /* _GUID, _GUID */
+    {
+        [FieldOffset(0)]
+        public uint Data1;
+    
+        [FieldOffset(4)]
+        public ushort Data2;
+    
+        [FieldOffset(6)]
+        public ushort Data3;
+    
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 8)]
+        [FieldOffset(8)]
+        public byte[] /*  [8] */ Data4;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -21,10 +39,13 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ Length;
+    
         [FieldOffset(4)]
         public SECURITY_IMPERSONATION_LEVEL /* SECURITY_IMPERSONATION_LEVEL */ ImpersonationLevel;
+    
         [FieldOffset(8)]
         public byte /* SECURITY_CONTEXT_TRACKING_MODE */ ContextTrackingMode;
+    
         [FieldOffset(9)]
         public byte /* BOOLEAN */ EffectiveOnly;
     }
@@ -139,10 +160,13 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public int /* LONG */ left;
+    
         [FieldOffset(4)]
         public int /* LONG */ top;
+    
         [FieldOffset(8)]
         public int /* LONG */ right;
+    
         [FieldOffset(12)]
         public int /* LONG */ bottom;
     }
@@ -152,6 +176,7 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public int /* LONG */ x;
+    
         [FieldOffset(4)]
         public int /* LONG */ y;
     }
@@ -161,6 +186,7 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public int /* LONG */ x;
+    
         [FieldOffset(4)]
         public int /* LONG */ y;
     }
@@ -170,6 +196,7 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public int /* LONG */ cx;
+    
         [FieldOffset(4)]
         public int /* LONG */ cy;
     }
@@ -179,6 +206,7 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public short /* SHORT */ x;
+    
         [FieldOffset(2)]
         public short /* SHORT */ y;
     }
@@ -188,8 +216,10 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ nLength;
+    
         [FieldOffset(8)]
-        public IntPtr /* void * */ lpSecurityDescriptor;
+        public IntPtr /* void *, LPVOID */ lpSecurityDescriptor;
+    
         [FieldOffset(16)]
         public bool bInheritHandle;
     }
@@ -200,80 +230,117 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         [FieldOffset(0)]
         public byte[] /*  [32] */ dmDeviceName;
+    
         [FieldOffset(32)]
         public ushort /* WORD */ dmSpecVersion;
+    
         [FieldOffset(34)]
         public ushort /* WORD */ dmDriverVersion;
+    
         [FieldOffset(36)]
         public ushort /* WORD */ dmSize;
+    
         [FieldOffset(38)]
         public ushort /* WORD */ dmDriverExtra;
+    
         [FieldOffset(40)]
         public uint /* DWORD */ dmFields;
+    
         [FieldOffset(44)]
         public short dmOrientation;
+    
         [FieldOffset(46)]
         public short dmPaperSize;
+    
         [FieldOffset(48)]
         public short dmPaperLength;
+    
         [FieldOffset(50)]
         public short dmPaperWidth;
+    
         [FieldOffset(52)]
         public short dmScale;
+    
         [FieldOffset(54)]
         public short dmCopies;
+    
         [FieldOffset(56)]
         public short dmDefaultSource;
+    
         [FieldOffset(58)]
         public short dmPrintQuality;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(44)]
         public POINTL /* POINTL */ dmPosition;
+    
         [FieldOffset(52)]
         public uint /* DWORD */ dmDisplayOrientation;
+    
         [FieldOffset(56)]
         public uint /* DWORD */ dmDisplayFixedOutput;
+    
         [FieldOffset(60)]
         public short dmColor;
+    
         [FieldOffset(62)]
         public short dmDuplex;
+    
         [FieldOffset(64)]
         public short dmYResolution;
+    
         [FieldOffset(66)]
         public short dmTTOption;
+    
         [FieldOffset(68)]
         public short dmCollate;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         [FieldOffset(70)]
         public byte[] /*  [32] */ dmFormName;
+    
         [FieldOffset(102)]
         public ushort /* WORD */ dmLogPixels;
+    
         [FieldOffset(104)]
         public uint /* DWORD */ dmBitsPerPel;
+    
         [FieldOffset(108)]
         public uint /* DWORD */ dmPelsWidth;
+    
         [FieldOffset(112)]
         public uint /* DWORD */ dmPelsHeight;
+    
         [FieldOffset(116)]
         public uint /* DWORD */ dmDisplayFlags;
+    
         [FieldOffset(116)]
         public uint /* DWORD */ dmNup;
+    
         [FieldOffset(120)]
         public uint /* DWORD */ dmDisplayFrequency;
+    
         [FieldOffset(124)]
         public uint /* DWORD */ dmICMMethod;
+    
         [FieldOffset(128)]
         public uint /* DWORD */ dmICMIntent;
+    
         [FieldOffset(132)]
         public uint /* DWORD */ dmMediaType;
+    
         [FieldOffset(136)]
         public uint /* DWORD */ dmDitherType;
+    
         [FieldOffset(140)]
         public uint /* DWORD */ dmReserved1;
+    
         [FieldOffset(144)]
         public uint /* DWORD */ dmReserved2;
+    
         [FieldOffset(148)]
         public uint /* DWORD */ dmPanningWidth;
+    
         [FieldOffset(152)]
         public uint /* DWORD */ dmPanningHeight;
     }
@@ -285,81 +352,118 @@ namespace User32Dll
         [FieldOffset(0)]
         public char[] /*  [32] */ dmDeviceName;
         public string dmDeviceNameStr => new string(dmDeviceName);
+    
         [FieldOffset(64)]
         public ushort /* WORD */ dmSpecVersion;
+    
         [FieldOffset(66)]
         public ushort /* WORD */ dmDriverVersion;
+    
         [FieldOffset(68)]
         public ushort /* WORD */ dmSize;
+    
         [FieldOffset(70)]
         public ushort /* WORD */ dmDriverExtra;
+    
         [FieldOffset(72)]
         public uint /* DWORD */ dmFields;
+    
         [FieldOffset(76)]
         public short dmOrientation;
+    
         [FieldOffset(78)]
         public short dmPaperSize;
+    
         [FieldOffset(80)]
         public short dmPaperLength;
+    
         [FieldOffset(82)]
         public short dmPaperWidth;
+    
         [FieldOffset(84)]
         public short dmScale;
+    
         [FieldOffset(86)]
         public short dmCopies;
+    
         [FieldOffset(88)]
         public short dmDefaultSource;
+    
         [FieldOffset(90)]
         public short dmPrintQuality;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(76)]
         public POINTL /* POINTL */ dmPosition;
+    
         [FieldOffset(84)]
         public uint /* DWORD */ dmDisplayOrientation;
+    
         [FieldOffset(88)]
         public uint /* DWORD */ dmDisplayFixedOutput;
+    
         [FieldOffset(92)]
         public short dmColor;
+    
         [FieldOffset(94)]
         public short dmDuplex;
+    
         [FieldOffset(96)]
         public short dmYResolution;
+    
         [FieldOffset(98)]
         public short dmTTOption;
+    
         [FieldOffset(100)]
         public short dmCollate;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         [FieldOffset(102)]
         public char[] /*  [32] */ dmFormName;
         public string dmFormNameStr => new string(dmFormName);
+    
         [FieldOffset(166)]
         public ushort /* WORD */ dmLogPixels;
+    
         [FieldOffset(168)]
         public uint /* DWORD */ dmBitsPerPel;
+    
         [FieldOffset(172)]
         public uint /* DWORD */ dmPelsWidth;
+    
         [FieldOffset(176)]
         public uint /* DWORD */ dmPelsHeight;
+    
         [FieldOffset(180)]
         public uint /* DWORD */ dmDisplayFlags;
+    
         [FieldOffset(180)]
         public uint /* DWORD */ dmNup;
+    
         [FieldOffset(184)]
         public uint /* DWORD */ dmDisplayFrequency;
+    
         [FieldOffset(188)]
         public uint /* DWORD */ dmICMMethod;
+    
         [FieldOffset(192)]
         public uint /* DWORD */ dmICMIntent;
+    
         [FieldOffset(196)]
         public uint /* DWORD */ dmMediaType;
+    
         [FieldOffset(200)]
         public uint /* DWORD */ dmDitherType;
+    
         [FieldOffset(204)]
         public uint /* DWORD */ dmReserved1;
+    
         [FieldOffset(208)]
         public uint /* DWORD */ dmReserved2;
+    
         [FieldOffset(212)]
         public uint /* DWORD */ dmPanningWidth;
+    
         [FieldOffset(216)]
         public uint /* DWORD */ dmPanningHeight;
     }
@@ -369,20 +473,25 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cb;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         [FieldOffset(4)]
         public byte[] /*  [32] */ DeviceName;
         public string DeviceNameStr => Encoding.ASCII.GetString(DeviceName);
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
         [FieldOffset(36)]
         public byte[] /*  [128] */ DeviceString;
         public string DeviceStringStr => Encoding.ASCII.GetString(DeviceString);
+    
         [FieldOffset(164)]
         public uint /* DWORD */ StateFlags;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
         [FieldOffset(168)]
         public byte[] /*  [128] */ DeviceID;
         public string DeviceIDStr => Encoding.ASCII.GetString(DeviceID);
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
         [FieldOffset(296)]
         public byte[] /*  [128] */ DeviceKey;
@@ -394,20 +503,25 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cb;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         [FieldOffset(4)]
         public char[] /*  [32] */ DeviceName;
         public string DeviceNameStr => new string(DeviceName);
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
         [FieldOffset(68)]
         public char[] /*  [128] */ DeviceString;
         public string DeviceStringStr => new string(DeviceString);
+    
         [FieldOffset(324)]
         public uint /* DWORD */ StateFlags;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
         [FieldOffset(328)]
         public char[] /*  [128] */ DeviceID;
         public string DeviceIDStr => new string(DeviceID);
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
         [FieldOffset(584)]
         public char[] /*  [128] */ DeviceKey;
@@ -419,6 +533,7 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT32 */ Numerator;
+    
         [FieldOffset(4)]
         public uint /* UINT32 */ Denominator;
     }
@@ -428,6 +543,7 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT32 */ cx;
+    
         [FieldOffset(4)]
         public uint /* UINT32 */ cy;
     }
@@ -437,35 +553,23 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public ulong /* UINT64 */ pixelRate;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public DISPLAYCONFIG_RATIONAL hSyncFreq;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public DISPLAYCONFIG_RATIONAL vSyncFreq;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public DISPLAYCONFIG_2DREGION activeSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public DISPLAYCONFIG_2DREGION totalSize;
-        [FieldOffset(40)]
-        public uint /* UINT32 */ videoStandard;
-        [FieldOffset(0)]
-        public uint /* UINT32 */ vSyncFreqDivider;
-        [FieldOffset(0)]
-        public uint /* UINT32 */ reserved;
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(40)]
-        public DISPLAYCONFIG_VIDEO_SIGNAL_INFO::(anonymous struct at C:\Program Files (x86)\Windows Kits\8.1\include\um\wingdi.h:2839:9) /* struct (anonymous struct at C:\Program Files (x86)\Windows Kits\8.1\include\um\wingdi.h:2839:9) */ AdditionalSignalInfo;
-        [FieldOffset(40)]
-        public uint /* UINT32 */ videoStandard;
-        [FieldOffset(0)]
-        public uint /* UINT32 */ vSyncFreqDivider;
-        [FieldOffset(0)]
-        public uint /* UINT32 */ reserved;
-        [FieldOffset(40)]
-        public uint /* UINT32 */ videoStandard;
+    
         [FieldOffset(44)]
         public DISPLAYCONFIG_SCANLINE_ORDERING scanLineOrdering;
     }
@@ -475,10 +579,13 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT32 */ width;
+    
         [FieldOffset(4)]
         public uint /* UINT32 */ height;
+    
         [FieldOffset(8)]
         public DISPLAYCONFIG_PIXELFORMAT pixelFormat;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(12)]
         public POINTL /* POINTL */ position;
@@ -497,14 +604,18 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public DISPLAYCONFIG_MODE_INFO_TYPE infoType;
+    
         [FieldOffset(4)]
         public uint /* UINT32 */ id;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public LUID /* LUID */ adapterId;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public DISPLAYCONFIG_TARGET_MODE targetMode;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public DISPLAYCONFIG_SOURCE_MODE sourceMode;
@@ -516,10 +627,13 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public LUID /* LUID */ adapterId;
+    
         [FieldOffset(8)]
         public uint /* UINT32 */ id;
+    
         [FieldOffset(12)]
         public uint /* UINT32 */ modeInfoIdx;
+    
         [FieldOffset(16)]
         public uint /* UINT32 */ statusFlags;
     }
@@ -530,23 +644,32 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public LUID /* LUID */ adapterId;
+    
         [FieldOffset(8)]
         public uint /* UINT32 */ id;
+    
         [FieldOffset(12)]
         public uint /* UINT32 */ modeInfoIdx;
+    
         [FieldOffset(16)]
         public DISPLAYCONFIG_VIDEO_OUTPUT_TECHNOLOGY outputTechnology;
+    
         [FieldOffset(20)]
         public DISPLAYCONFIG_ROTATION rotation;
+    
         [FieldOffset(24)]
         public DISPLAYCONFIG_SCALING scaling;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(28)]
         public DISPLAYCONFIG_RATIONAL refreshRate;
+    
         [FieldOffset(36)]
         public DISPLAYCONFIG_SCANLINE_ORDERING scanLineOrdering;
+    
         [FieldOffset(40)]
         public bool targetAvailable;
+    
         [FieldOffset(44)]
         public uint /* UINT32 */ statusFlags;
     }
@@ -557,9 +680,11 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public DISPLAYCONFIG_PATH_SOURCE_INFO sourceInfo;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(20)]
         public DISPLAYCONFIG_PATH_TARGET_INFO targetInfo;
+    
         [FieldOffset(68)]
         public uint /* UINT32 */ flags;
     }
@@ -569,11 +694,14 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public DISPLAYCONFIG_DEVICE_INFO_TYPE type;
+    
         [FieldOffset(4)]
         public uint /* UINT32 */ size;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public LUID /* LUID */ adapterId;
+    
         [FieldOffset(16)]
         public uint /* UINT32 */ id;
     }
@@ -583,10 +711,13 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public byte BlendOp;
+    
         [FieldOffset(1)]
         public byte BlendFlags;
+    
         [FieldOffset(2)]
         public byte SourceConstantAlpha;
+    
         [FieldOffset(3)]
         public byte AlphaFormat;
     }
@@ -596,10 +727,13 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public int x;
+    
         [FieldOffset(4)]
         public int y;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ time;
+    
         [FieldOffset(16)]
         public ulong /* ULONG_PTR */ dwExtraInfo;
     }
@@ -609,30 +743,41 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* UINT */ style;
+    
         [FieldOffset(8)]
-        public IntPtr /* long long (*)(HWND__ *, unsigned int, unsigned long long, long long) */ lpfnWndProc;
+        public IntPtr /* long long (*)(HWND__ *, unsigned int, unsigned long long, long long), WNDPROC */ lpfnWndProc;
+    
         [FieldOffset(16)]
         public int cbClsExtra;
+    
         [FieldOffset(20)]
         public int cbWndExtra;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HINSTANCE /* HINSTANCE */ hInstance;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HICON /* HICON */ hIcon;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HICON /* HCURSOR */ hCursor;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(48)]
         public HBRUSH /* HBRUSH */ hbrBackground;
+    
         [FieldOffset(56)]
-        public IntPtr /* const char * */ lpszMenuName;
+        public IntPtr /* const char *, LPCSTR */ lpszMenuName;
+    
         [FieldOffset(64)]
-        public IntPtr /* const char * */ lpszClassName;
+        public IntPtr /* const char *, LPCSTR */ lpszClassName;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(72)]
         public HICON /* HICON */ hIconSm;
@@ -643,30 +788,41 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* UINT */ style;
+    
         [FieldOffset(8)]
-        public IntPtr /* long long (*)(HWND__ *, unsigned int, unsigned long long, long long) */ lpfnWndProc;
+        public IntPtr /* long long (*)(HWND__ *, unsigned int, unsigned long long, long long), WNDPROC */ lpfnWndProc;
+    
         [FieldOffset(16)]
         public int cbClsExtra;
+    
         [FieldOffset(20)]
         public int cbWndExtra;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HINSTANCE /* HINSTANCE */ hInstance;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HICON /* HICON */ hIcon;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HICON /* HCURSOR */ hCursor;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(48)]
         public HBRUSH /* HBRUSH */ hbrBackground;
+    
         [FieldOffset(56)]
-        public IntPtr /* const wchar_t * */ lpszMenuName;
+        public IntPtr /* const wchar_t *, LPCWSTR */ lpszMenuName;
+    
         [FieldOffset(64)]
-        public IntPtr /* const wchar_t * */ lpszClassName;
+        public IntPtr /* const wchar_t *, LPCWSTR */ lpszClassName;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(72)]
         public HICON /* HICON */ hIconSm;
@@ -677,28 +833,37 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ style;
+    
         [FieldOffset(8)]
-        public IntPtr /* long long (*)(HWND__ *, unsigned int, unsigned long long, long long) */ lpfnWndProc;
+        public IntPtr /* long long (*)(HWND__ *, unsigned int, unsigned long long, long long), WNDPROC */ lpfnWndProc;
+    
         [FieldOffset(16)]
         public int cbClsExtra;
+    
         [FieldOffset(20)]
         public int cbWndExtra;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HINSTANCE /* HINSTANCE */ hInstance;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HICON /* HICON */ hIcon;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HICON /* HCURSOR */ hCursor;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(48)]
         public HBRUSH /* HBRUSH */ hbrBackground;
+    
         [FieldOffset(56)]
-        public IntPtr /* const char * */ lpszMenuName;
+        public IntPtr /* const char *, LPCSTR */ lpszMenuName;
+    
         [FieldOffset(64)]
-        public IntPtr /* const char * */ lpszClassName;
+        public IntPtr /* const char *, LPCSTR */ lpszClassName;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -706,28 +871,37 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ style;
+    
         [FieldOffset(8)]
-        public IntPtr /* long long (*)(HWND__ *, unsigned int, unsigned long long, long long) */ lpfnWndProc;
+        public IntPtr /* long long (*)(HWND__ *, unsigned int, unsigned long long, long long), WNDPROC */ lpfnWndProc;
+    
         [FieldOffset(16)]
         public int cbClsExtra;
+    
         [FieldOffset(20)]
         public int cbWndExtra;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HINSTANCE /* HINSTANCE */ hInstance;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HICON /* HICON */ hIcon;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HICON /* HCURSOR */ hCursor;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(48)]
         public HBRUSH /* HBRUSH */ hbrBackground;
+    
         [FieldOffset(56)]
-        public IntPtr /* const wchar_t * */ lpszMenuName;
+        public IntPtr /* const wchar_t *, LPCWSTR */ lpszMenuName;
+    
         [FieldOffset(64)]
-        public IntPtr /* const wchar_t * */ lpszClassName;
+        public IntPtr /* const wchar_t *, LPCWSTR */ lpszClassName;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -736,14 +910,19 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public HWND /* HWND */ hwnd;
+    
         [FieldOffset(8)]
         public uint /* UINT */ message;
+    
         [FieldOffset(16)]
         public ulong /* WPARAM */ wParam;
+    
         [FieldOffset(24)]
         public long /* LPARAM */ lParam;
+    
         [FieldOffset(32)]
         public uint /* DWORD */ time;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(36)]
         public POINT /* POINT */ pt;
@@ -754,11 +933,14 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ dwFlags;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public HWND /* HWND */ hwndTrack;
+    
         [FieldOffset(16)]
         public uint /* DWORD */ dwHoverTime;
     }
@@ -768,8 +950,10 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public byte fVirt;
+    
         [FieldOffset(2)]
         public ushort /* WORD */ key;
+    
         [FieldOffset(4)]
         public ushort /* WORD */ cmd;
     }
@@ -780,15 +964,20 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public HDC /* HDC */ hdc;
+    
         [FieldOffset(8)]
         public bool fErase;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(12)]
         public RECT /* RECT */ rcPaint;
+    
         [FieldOffset(28)]
         public bool fRestore;
+    
         [FieldOffset(32)]
         public bool fIncUpdate;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
         [FieldOffset(36)]
         public byte[] /*  [32] */ rgbReserved;
@@ -799,19 +988,65 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ length;
+    
         [FieldOffset(4)]
         public uint /* UINT */ flags;
+    
         [FieldOffset(8)]
         public uint /* UINT */ showCmd;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(12)]
         public POINT /* POINT */ ptMinPosition;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(20)]
         public POINT /* POINT */ ptMaxPosition;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(28)]
         public RECT /* RECT */ rcNormalPosition;
+    }
+    
+    [StructLayout(LayoutKind.Explicit), Serializable]
+    public struct UPDATELAYEREDWINDOWINFO /* tagUPDATELAYEREDWINDOWINFO, tagUPDATELAYEREDWINDOWINFO */
+    {
+        [FieldOffset(0)]
+        public uint /* DWORD */ cbSize;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(8)]
+        public HDC /* HDC */ hdcDst;
+    
+        [MarshalAs(UnmanagedType.LPStruct)]
+        [FieldOffset(16)]
+        public POINT /* const POINT * */ pptDst;
+    
+        [MarshalAs(UnmanagedType.LPStruct)]
+        [FieldOffset(24)]
+        public SIZE /* const SIZE * */ psize;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(32)]
+        public HDC /* HDC */ hdcSrc;
+    
+        [MarshalAs(UnmanagedType.LPStruct)]
+        [FieldOffset(40)]
+        public POINT /* const POINT * */ pptSrc;
+    
+        [FieldOffset(48)]
+        public uint /* COLORREF */ crKey;
+    
+        [MarshalAs(UnmanagedType.LPStruct)]
+        [FieldOffset(56)]
+        public BLENDFUNCTION /* const BLENDFUNCTION * */ pblend;
+    
+        [FieldOffset(64)]
+        public uint /* DWORD */ dwFlags;
+    
+        [MarshalAs(UnmanagedType.LPStruct)]
+        [FieldOffset(72)]
+        public RECT /* const RECT * */ prcDirty;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -819,14 +1054,19 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public int /* LONG */ dx;
+    
         [FieldOffset(4)]
         public int /* LONG */ dy;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ mouseData;
+    
         [FieldOffset(12)]
         public uint /* DWORD */ dwFlags;
+    
         [FieldOffset(16)]
         public uint /* DWORD */ time;
+    
         [FieldOffset(24)]
         public ulong /* ULONG_PTR */ dwExtraInfo;
     }
@@ -836,12 +1076,16 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public ushort /* WORD */ wVk;
+    
         [FieldOffset(2)]
         public ushort /* WORD */ wScan;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ dwFlags;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ time;
+    
         [FieldOffset(16)]
         public ulong /* ULONG_PTR */ dwExtraInfo;
     }
@@ -851,8 +1095,10 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ uMsg;
+    
         [FieldOffset(4)]
         public ushort /* WORD */ wParamL;
+    
         [FieldOffset(6)]
         public ushort /* WORD */ wParamH;
     }
@@ -862,12 +1108,15 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ type;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public MOUSEINPUT /* MOUSEINPUT */ mi;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public KEYBDINPUT /* KEYBDINPUT */ ki;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public HARDWAREINPUT /* HARDWAREINPUT */ hi;
@@ -885,22 +1134,31 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public int /* LONG */ x;
+    
         [FieldOffset(4)]
         public int /* LONG */ y;
+    
         [FieldOffset(8)]
-        public IntPtr /* void * */ hSource;
+        public IntPtr /* void *, HANDLE */ hSource;
+    
         [FieldOffset(16)]
         public uint /* DWORD */ dwID;
+    
         [FieldOffset(20)]
         public uint /* DWORD */ dwFlags;
+    
         [FieldOffset(24)]
         public uint /* DWORD */ dwMask;
+    
         [FieldOffset(28)]
         public uint /* DWORD */ dwTime;
+    
         [FieldOffset(32)]
         public ulong /* ULONG_PTR */ dwExtraInfo;
+    
         [FieldOffset(40)]
         public uint /* DWORD */ cxContact;
+    
         [FieldOffset(44)]
         public uint /* DWORD */ cyContact;
     }
@@ -910,6 +1168,7 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ dwTime;
     }
@@ -919,29 +1178,10 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(4)]
         public RECT /* RECT */ rcExclude;
-    }
-    
-    [StructLayout(LayoutKind.Explicit), Serializable]
-    public struct MENUINFO /* tagMENUINFO, tagMENUINFO */
-    {
-        [FieldOffset(0)]
-        public uint /* DWORD */ cbSize;
-        [FieldOffset(4)]
-        public uint /* DWORD */ fMask;
-        [FieldOffset(8)]
-        public uint /* DWORD */ dwStyle;
-        [FieldOffset(12)]
-        public uint /* UINT */ cyMax;
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(16)]
-        public HBRUSH /* HBRUSH */ hbrBack;
-        [FieldOffset(24)]
-        public uint /* DWORD */ dwContextHelpID;
-        [FieldOffset(32)]
-        public ulong /* ULONG_PTR */ dwMenuData;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -949,29 +1189,41 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* UINT */ fMask;
+    
         [FieldOffset(8)]
         public uint /* UINT */ fType;
+    
         [FieldOffset(12)]
         public uint /* UINT */ fState;
+    
         [FieldOffset(16)]
         public uint /* UINT */ wID;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HMENU /* HMENU */ hSubMenu;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HBITMAP /* HBITMAP */ hbmpChecked;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HBITMAP /* HBITMAP */ hbmpUnchecked;
+    
         [FieldOffset(48)]
         public ulong /* ULONG_PTR */ dwItemData;
+    
+        [MarshalAs(UnmanagedType.LPTStr)]
         [FieldOffset(56)]
-        public IntPtr /* char * */ dwTypeData;
+        public string /* char *, LPSTR */ dwTypeData;
+    
         [FieldOffset(64)]
         public uint /* UINT */ cch;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(72)]
         public HBITMAP /* HBITMAP */ hbmpItem;
@@ -982,29 +1234,41 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* UINT */ fMask;
+    
         [FieldOffset(8)]
         public uint /* UINT */ fType;
+    
         [FieldOffset(12)]
         public uint /* UINT */ fState;
+    
         [FieldOffset(16)]
         public uint /* UINT */ wID;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HMENU /* HMENU */ hSubMenu;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HBITMAP /* HBITMAP */ hbmpChecked;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HBITMAP /* HBITMAP */ hbmpUnchecked;
+    
         [FieldOffset(48)]
         public ulong /* ULONG_PTR */ dwItemData;
+    
+        [MarshalAs(UnmanagedType.LPWStr)]
         [FieldOffset(56)]
-        public IntPtr /* wchar_t * */ dwTypeData;
+        public string /* wchar_t *, LPWSTR */ dwTypeData;
+    
         [FieldOffset(64)]
         public uint /* UINT */ cch;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(72)]
         public HBITMAP /* HBITMAP */ hbmpItem;
@@ -1015,14 +1279,90 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [FieldOffset(4)]
         public int iTabLength;
+    
         [FieldOffset(8)]
         public int iLeftMargin;
+    
         [FieldOffset(12)]
         public int iRightMargin;
+    
         [FieldOffset(16)]
         public uint /* UINT */ uiLengthDrawn;
+    }
+    
+    [StructLayout(LayoutKind.Explicit), Serializable]
+    public struct MSGBOXPARAMSA /* tagMSGBOXPARAMSA, tagMSGBOXPARAMSA */
+    {
+        [FieldOffset(0)]
+        public uint /* UINT */ cbSize;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(8)]
+        public HWND /* HWND */ hwndOwner;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(16)]
+        public HINSTANCE /* HINSTANCE */ hInstance;
+    
+        [FieldOffset(24)]
+        public IntPtr /* const char *, LPCSTR */ lpszText;
+    
+        [FieldOffset(32)]
+        public IntPtr /* const char *, LPCSTR */ lpszCaption;
+    
+        [FieldOffset(40)]
+        public uint /* DWORD */ dwStyle;
+    
+        [FieldOffset(48)]
+        public IntPtr /* const char *, LPCSTR */ lpszIcon;
+    
+        [FieldOffset(56)]
+        public ulong /* DWORD_PTR */ dwContextHelpId;
+    
+        [FieldOffset(64)]
+        public IntPtr /* void (*)(tagHELPINFO *), MSGBOXCALLBACK */ lpfnMsgBoxCallback;
+    
+        [FieldOffset(72)]
+        public uint /* DWORD */ dwLanguageId;
+    }
+    
+    [StructLayout(LayoutKind.Explicit), Serializable]
+    public struct MSGBOXPARAMSW /* tagMSGBOXPARAMSW, tagMSGBOXPARAMSW */
+    {
+        [FieldOffset(0)]
+        public uint /* UINT */ cbSize;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(8)]
+        public HWND /* HWND */ hwndOwner;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(16)]
+        public HINSTANCE /* HINSTANCE */ hInstance;
+    
+        [FieldOffset(24)]
+        public IntPtr /* const wchar_t *, LPCWSTR */ lpszText;
+    
+        [FieldOffset(32)]
+        public IntPtr /* const wchar_t *, LPCWSTR */ lpszCaption;
+    
+        [FieldOffset(40)]
+        public uint /* DWORD */ dwStyle;
+    
+        [FieldOffset(48)]
+        public IntPtr /* const wchar_t *, LPCWSTR */ lpszIcon;
+    
+        [FieldOffset(56)]
+        public ulong /* DWORD_PTR */ dwContextHelpId;
+    
+        [FieldOffset(64)]
+        public IntPtr /* void (*)(tagHELPINFO *), MSGBOXCALLBACK */ lpfnMsgBoxCallback;
+    
+        [FieldOffset(72)]
+        public uint /* DWORD */ dwLanguageId;
     }
     
     [StructLayout(LayoutKind.Explicit), Serializable]
@@ -1030,13 +1370,17 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public bool fIcon;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ xHotspot;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ yHotspot;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public HBITMAP /* HBITMAP */ hbmMask;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HBITMAP /* HBITMAP */ hbmColor;
@@ -1047,24 +1391,32 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [FieldOffset(4)]
         public bool fIcon;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ xHotspot;
+    
         [FieldOffset(12)]
         public uint /* DWORD */ yHotspot;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public HBITMAP /* HBITMAP */ hbmMask;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HBITMAP /* HBITMAP */ hbmColor;
+    
         [FieldOffset(32)]
         public ushort /* WORD */ wResID;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
         [FieldOffset(34)]
         public byte[] /*  [260] */ szModName;
         public string szModNameStr => Encoding.ASCII.GetString(szModName);
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
         [FieldOffset(294)]
         public byte[] /*  [260] */ szResName;
@@ -1076,24 +1428,32 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [FieldOffset(4)]
         public bool fIcon;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ xHotspot;
+    
         [FieldOffset(12)]
         public uint /* DWORD */ yHotspot;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public HBITMAP /* HBITMAP */ hbmMask;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HBITMAP /* HBITMAP */ hbmColor;
+    
         [FieldOffset(32)]
         public ushort /* WORD */ wResID;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
         [FieldOffset(34)]
         public char[] /*  [260] */ szModName;
         public string szModNameStr => new string(szModName);
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 260)]
         [FieldOffset(554)]
         public char[] /*  [260] */ szResName;
@@ -1105,16 +1465,22 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* UINT */ fMask;
+    
         [FieldOffset(8)]
         public int nMin;
+    
         [FieldOffset(12)]
         public int nMax;
+    
         [FieldOffset(16)]
         public uint /* UINT */ nPage;
+    
         [FieldOffset(20)]
         public int nPos;
+    
         [FieldOffset(24)]
         public int nTrackPos;
     }
@@ -1124,12 +1490,15 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(4)]
         public RECT /* RECT */ rcMonitor;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(20)]
         public RECT /* RECT */ rcWork;
+    
         [FieldOffset(36)]
         public uint /* DWORD */ dwFlags;
     }
@@ -1139,26 +1508,34 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ flags;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public HWND /* HWND */ hwndActive;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public HWND /* HWND */ hwndFocus;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HWND /* HWND */ hwndCapture;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HWND /* HWND */ hwndMenuOwner;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HWND /* HWND */ hwndMoveSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(48)]
         public HWND /* HWND */ hwndCaret;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(56)]
         public RECT /* RECT */ rcCaret;
@@ -1169,11 +1546,14 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ flags;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public HICON /* HCURSOR */ hCursor;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public POINT /* POINT */ ptScreenPos;
@@ -1184,24 +1564,33 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(4)]
         public RECT /* RECT */ rcWindow;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(20)]
         public RECT /* RECT */ rcClient;
+    
         [FieldOffset(36)]
         public uint /* DWORD */ dwStyle;
+    
         [FieldOffset(40)]
         public uint /* DWORD */ dwExStyle;
+    
         [FieldOffset(44)]
         public uint /* DWORD */ dwWindowStatus;
+    
         [FieldOffset(48)]
         public uint /* UINT */ cxWindowBorders;
+    
         [FieldOffset(52)]
         public uint /* UINT */ cyWindowBorders;
+    
         [FieldOffset(56)]
         public ushort /* ATOM */ atomWindowType;
+    
         [FieldOffset(58)]
         public ushort /* WORD */ wCreatorVersion;
     }
@@ -1211,9 +1600,11 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(4)]
         public RECT /* RECT */ rcTitleBar;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
         [FieldOffset(20)]
         public uint[] /*  [6] */ rgstate;
@@ -1224,17 +1615,22 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(4)]
         public RECT /* RECT */ rcBar;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HMENU /* HMENU */ hMenu;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HWND /* HWND */ hwndMenu;
+    
         [FieldOffset(40)]
         public bool fBarFocused;
+    
         [FieldOffset(40)]
         public bool fFocused;
     }
@@ -1244,17 +1640,23 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(4)]
         public RECT /* RECT */ rcScrollBar;
+    
         [FieldOffset(20)]
         public int dxyLineButton;
+    
         [FieldOffset(24)]
         public int xyThumbTop;
+    
         [FieldOffset(28)]
         public int xyThumbBottom;
+    
         [FieldOffset(32)]
         public int reserved;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 6)]
         [FieldOffset(36)]
         public uint[] /*  [6] */ rgstate;
@@ -1265,20 +1667,26 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(4)]
         public RECT /* RECT */ rcItem;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(20)]
         public RECT /* RECT */ rcButton;
+    
         [FieldOffset(36)]
         public uint /* DWORD */ stateButton;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HWND /* HWND */ hwndCombo;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(48)]
         public HWND /* HWND */ hwndItem;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(56)]
         public HWND /* HWND */ hwndList;
@@ -1289,20 +1697,28 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [FieldOffset(4)]
         public int cItems;
+    
         [FieldOffset(8)]
         public int cColumns;
+    
         [FieldOffset(12)]
         public int cRows;
+    
         [FieldOffset(16)]
         public int iColFocus;
+    
         [FieldOffset(20)]
         public int iRowFocus;
+    
         [FieldOffset(24)]
         public int cxItem;
+    
         [FieldOffset(28)]
         public int cyItem;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public POINT /* POINT */ ptStart;
@@ -1320,10 +1736,13 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ dwType;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ dwSize;
+    
         [FieldOffset(8)]
-        public IntPtr /* void * */ hDevice;
+        public IntPtr /* void *, HANDLE */ hDevice;
+    
         [FieldOffset(16)]
         public ulong /* WPARAM */ wParam;
     }
@@ -1333,18 +1752,25 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public ushort /* USHORT */ usFlags;
+    
         [FieldOffset(4)]
         public uint /* ULONG */ ulButtons;
+    
         [FieldOffset(4)]
         public ushort /* USHORT */ usButtonFlags;
+    
         [FieldOffset(6)]
         public ushort /* USHORT */ usButtonData;
+    
         [FieldOffset(8)]
         public uint /* ULONG */ ulRawButtons;
+    
         [FieldOffset(12)]
         public int /* LONG */ lLastX;
+    
         [FieldOffset(16)]
         public int /* LONG */ lLastY;
+    
         [FieldOffset(20)]
         public uint /* ULONG */ ulExtraInformation;
     }
@@ -1354,14 +1780,19 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public ushort /* USHORT */ MakeCode;
+    
         [FieldOffset(2)]
         public ushort /* USHORT */ Flags;
+    
         [FieldOffset(4)]
         public ushort /* USHORT */ Reserved;
+    
         [FieldOffset(6)]
         public ushort /* USHORT */ VKey;
+    
         [FieldOffset(8)]
         public uint /* UINT */ Message;
+    
         [FieldOffset(12)]
         public uint /* ULONG */ ExtraInformation;
     }
@@ -1371,8 +1802,10 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ dwSizeHid;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ dwCount;
+    
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
         [FieldOffset(8)]
         public byte[] /*  [1] */ bRawData;
@@ -1384,24 +1817,15 @@ namespace User32Dll
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public RAWINPUTHEADER /* RAWINPUTHEADER */ header;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public RAWMOUSE /* RAWMOUSE */ mouse;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public RAWKEYBOARD /* RAWKEYBOARD */ keyboard;
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(0)]
-        public RAWHID /* RAWHID */ hid;
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(24)]
-        public RAWINPUT::(anonymous union at C:\Program Files (x86)\Windows Kits\8.1\include\um\winuser.h:14302:5) /* union (anonymous union at C:\Program Files (x86)\Windows Kits\8.1\include\um\winuser.h:14302:5) */ data;
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(0)]
-        public RAWMOUSE /* RAWMOUSE */ mouse;
-        [MarshalAs(UnmanagedType.Struct)]
-        [FieldOffset(0)]
-        public RAWKEYBOARD /* RAWKEYBOARD */ keyboard;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(0)]
         public RAWHID /* RAWHID */ hid;
@@ -1412,10 +1836,13 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public ushort /* USHORT */ usUsagePage;
+    
         [FieldOffset(2)]
         public ushort /* USHORT */ usUsage;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ dwFlags;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(8)]
         public HWND /* HWND */ hwndTarget;
@@ -1425,7 +1852,8 @@ namespace User32Dll
     public struct RAWINPUTDEVICELIST /* tagRAWINPUTDEVICELIST, tagRAWINPUTDEVICELIST */
     {
         [FieldOffset(0)]
-        public IntPtr /* void * */ hDevice;
+        public IntPtr /* void *, HANDLE */ hDevice;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ dwType;
     }
@@ -1435,6 +1863,7 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ ExtStatus;
     }
@@ -1451,22 +1880,30 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cbSize;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ dwFlags;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ dwID;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public HWND /* HWND */ hwndTarget;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public POINTS /* POINTS */ ptsLocation;
+    
         [FieldOffset(28)]
         public uint /* DWORD */ dwInstanceID;
+    
         [FieldOffset(32)]
         public uint /* DWORD */ dwSequenceID;
+    
         [FieldOffset(40)]
         public ulong /* ULONGLONG */ ullArguments;
+    
         [FieldOffset(48)]
         public uint /* UINT */ cbExtraArgs;
     }
@@ -1476,8 +1913,10 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ dwID;
+    
         [FieldOffset(4)]
         public uint /* DWORD */ dwWant;
+    
         [FieldOffset(8)]
         public uint /* DWORD */ dwBlock;
     }
@@ -1515,16 +1954,22 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* UINT */ cb;
+    
         [FieldOffset(4)]
         public uint /* UINT */ wFlags;
+    
         [FieldOffset(8)]
         public uint /* UINT */ wCountryID;
+    
         [FieldOffset(12)]
         public int iCodePage;
+    
         [FieldOffset(16)]
         public uint /* DWORD */ dwLangID;
+    
         [FieldOffset(20)]
         public uint /* DWORD */ dwSecurity;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public SECURITY_QUALITY_OF_SERVICE /* SECURITY_QUALITY_OF_SERVICE */ qos;
@@ -1535,44 +1980,123 @@ namespace User32Dll
     {
         [FieldOffset(0)]
         public uint /* DWORD */ cb;
+    
         [FieldOffset(8)]
         public ulong /* DWORD_PTR */ hUser;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(16)]
         public HCONV /* HCONV */ hConvPartner;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(24)]
         public HSZ /* HSZ */ hszSvcPartner;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(32)]
         public HSZ /* HSZ */ hszServiceReq;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(40)]
         public HSZ /* HSZ */ hszTopic;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(48)]
         public HSZ /* HSZ */ hszItem;
+    
         [FieldOffset(56)]
         public uint /* UINT */ wFmt;
+    
         [FieldOffset(60)]
         public uint /* UINT */ wType;
+    
         [FieldOffset(64)]
         public uint /* UINT */ wStatus;
+    
         [FieldOffset(68)]
         public uint /* UINT */ wConvst;
+    
         [FieldOffset(72)]
         public uint /* UINT */ wLastError;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(80)]
         public HCONVLIST /* HCONVLIST */ hConvList;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(88)]
         public CONVCONTEXT /* CONVCONTEXT */ ConvCtxt;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(128)]
         public HWND /* HWND */ hwnd;
+    
         [MarshalAs(UnmanagedType.Struct)]
         [FieldOffset(136)]
         public HWND /* HWND */ hwndPartner;
+    }
+    
+    [StructLayout(LayoutKind.Explicit), Serializable]
+    public struct BSMINFO /* BSMINFO, BSMINFO */
+    {
+        [FieldOffset(0)]
+        public uint /* UINT */ cbSize;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(8)]
+        public HDESK /* HDESK */ hdesk;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(16)]
+        public HWND /* HWND */ hwnd;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(24)]
+        public LUID /* LUID */ luid;
+    }
+    
+    [StructLayout(LayoutKind.Explicit), Serializable]
+    public struct FLASHWINFO /* FLASHWINFO, FLASHWINFO */
+    {
+        [FieldOffset(0)]
+        public uint /* UINT */ cbSize;
+    
+        [MarshalAs(UnmanagedType.Struct)]
+        [FieldOffset(8)]
+        public HWND /* HWND */ hwnd;
+    
+        [FieldOffset(16)]
+        public uint /* DWORD */ dwFlags;
+    
+        [FieldOffset(20)]
+        public uint /* UINT */ uCount;
+    
+        [FieldOffset(24)]
+        public uint /* DWORD */ dwTimeout;
+    }
+    
+    [StructLayout(LayoutKind.Explicit), Serializable]
+    public struct DLGTEMPLATE /* DLGTEMPLATE, DLGTEMPLATE */
+    {
+        [FieldOffset(0)]
+        public uint /* DWORD */ style;
+    
+        [FieldOffset(4)]
+        public uint /* DWORD */ dwExtendedStyle;
+    
+        [FieldOffset(8)]
+        public ushort /* WORD */ cdit;
+    
+        [FieldOffset(10)]
+        public short x;
+    
+        [FieldOffset(12)]
+        public short y;
+    
+        [FieldOffset(14)]
+        public short cx;
+    
+        [FieldOffset(16)]
+        public short cy;
     }
 }
