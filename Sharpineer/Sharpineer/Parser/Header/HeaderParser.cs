@@ -14,11 +14,11 @@ namespace Sharpineer.Parser.Header
         /// All header files
         /// </summary>
         public readonly string[] HeaderFiles;
-        
+
         /// <summary>
         /// Discovered enums
         /// </summary>
-        public readonly Dictionary<string, EnumInfo> Enums = new Dictionary<string, EnumInfo>(); 
+        public readonly Dictionary<string, EnumInfo> Enums = new Dictionary<string, EnumInfo>();
 
         /// <summary>
         /// All discovered extern "C" functions
@@ -123,6 +123,20 @@ namespace Sharpineer.Parser.Header
             // visit structs
             clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitStructs, new CXClientData(IntPtr.Zero));
             clang.visitChildren(clang.getTranslationUnitCursor(unit), VisitStructTypedefs, new CXClientData(IntPtr.Zero));
+
+            // debug dump
+            /*var depth = new Dictionary<CXCursor, int>();
+            clang.visitChildren(clang.getTranslationUnitCursor(unit), (cursor, parent, data) =>
+            {
+                if (!depth.ContainsKey(parent))
+                    depth.Add(parent, 0);
+                var d = depth[parent] + 1;
+                depth[cursor] = d;
+
+                Console.WriteLine(new string(' ', d * 3) + clang.getCursorSpelling(cursor) + " [" + cursor.kind + "]");
+
+                return CXChildVisitResult.CXChildVisit_Recurse;
+            }, new CXClientData(IntPtr.Zero));*/
 
             // resolve
             foreach (var info in Enums.Values)
@@ -276,7 +290,7 @@ namespace Sharpineer.Parser.Header
             var curKind = clang.getCursorKind(cursor);
             if (curKind != CXCursorKind.CXCursor_TypedefDecl) return CXChildVisitResult.CXChildVisit_Recurse;
 
-            var typedefType = clang.getCanonicalType( clang.getTypedefDeclUnderlyingType(cursor));
+            var typedefType = clang.getCanonicalType(clang.getTypedefDeclUnderlyingType(cursor));
             //Console.WriteLine("Typedef: " + clang.getCursorSpelling(cursor).ToString() + " - " + typedefType.kind);
 
             if (typedefType.kind != CXTypeKind.CXType_Enum)
@@ -288,7 +302,7 @@ namespace Sharpineer.Parser.Header
             // already found? continue
             if (Enums.ContainsKey(enumName))
                 return CXChildVisitResult.CXChildVisit_Continue;
-            
+
             var info = new EnumInfo
             {
                 Name = enumName,

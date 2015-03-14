@@ -36,10 +36,7 @@ namespace Sharpineer.Parser
             Assert.IsNotEmpty(userFuncs);
 
             //File.WriteAllLines(@"C:\Temp\userfuncs.txt", userFuncs.OrderBy(f => f.Name).Select(f => f.Name + "(" + (f.Parameters.Count == 0 ? " " : f.Parameters.Select(p => p.ToString()).Aggregate((s1, s2) => s1 + ", " + s2)) + ") -> " + f.ReturnType));
-
-            var win32fd = hparser.Structs.FirstOrDefault(s => s.Value.CSharpName == "Win32FindDataa").Value;
-            Assert.IsNotNull(win32fd);
-
+            
             var list = new List<string>();
             foreach (var func in userFuncs.OrderBy(f => f.Name))
             {

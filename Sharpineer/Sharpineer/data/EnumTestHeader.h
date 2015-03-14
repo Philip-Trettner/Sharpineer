@@ -20,3 +20,5 @@ enum class FooECB : short
 	ShortV1,
 	ShortV2,
 };
+
+#define TESTDEFINE 0
