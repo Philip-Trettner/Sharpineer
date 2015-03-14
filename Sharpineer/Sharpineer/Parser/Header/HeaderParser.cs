@@ -8,17 +8,17 @@ using Sharpineer.Helper;
 
 namespace Sharpineer.Parser.Header
 {
-    public class HeaderParser
+    public class HeaderParser : ITypeProvider
     {
         /// <summary>
         /// All header files
         /// </summary>
         public readonly string[] HeaderFiles;
-
+        
         /// <summary>
-        /// All discovered enums
+        /// Discovered enums
         /// </summary>
-        public readonly List<EnumInfo> Enums = new List<EnumInfo>();
+        public readonly Dictionary<string, EnumInfo> Enums = new Dictionary<string, EnumInfo>(); 
 
         /// <summary>
         /// All discovered extern "C" functions
@@ -64,7 +64,11 @@ namespace Sharpineer.Parser.Header
         public void NotifyDll(string dllName, IEnumerable<string> funcNames)
         {
             foreach (var funcName in funcNames.Where(funcName => ExternFunctions.ContainsKey(funcName)))
-                ExternFunctions[funcName].DllName = dllName;
+            {
+                var func = ExternFunctions[funcName];
+                func.DllName = dllName;
+                func.AddReference(dllName, this);
+            }
         }
 
         /// <summary>
@@ -240,7 +244,7 @@ namespace Sharpineer.Parser.Header
             }
 
             // already found? continue
-            if (Enums.Any(e => e.Name == enumName))
+            if (Enums.ContainsKey(enumName))
                 return CXChildVisitResult.CXChildVisit_Continue;
 
             var info = new EnumInfo
@@ -261,10 +265,20 @@ namespace Sharpineer.Parser.Header
             }, new CXClientData(IntPtr.Zero));
 
             // add enum
-            Enums.Add(info);
+            Enums.Add(info.Name, info);
 
             // descend
             return CXChildVisitResult.CXChildVisit_Recurse;
+        }
+
+        public StructInfo QueryStruct(string name)
+        {
+            return Structs.ContainsKey(name) ? Structs[name] : null;
+        }
+
+        public EnumInfo QueryEnum(string name)
+        {
+            return Enums.ContainsKey(name) ? Enums[name] : null;
         }
     }
 }

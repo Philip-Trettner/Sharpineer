@@ -37,5 +37,10 @@ namespace Sharpineer.Parser.Header
                     }
             }
         }
+
+        public void AddReference(string dll, ITypeProvider typer)
+        {
+            Type.AddReference(dll, typer);
+        }
     }
 }

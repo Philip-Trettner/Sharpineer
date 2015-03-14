@@ -26,27 +26,22 @@ namespace Sharpineer.Parser.Header
         public readonly List<ArgumentInfo> Members = new List<ArgumentInfo>();
 
         /// <summary>
-        /// Name of the struct for C# version
+        /// Set of dlls that reference this struct
         /// </summary>
-        public string CSharpName => CSharpNameOf(Name);
+        public readonly HashSet<string> ReferencedDlls = new HashSet<string>();
 
         /// <summary>
         /// Name of the struct for C# version
         /// </summary>
-        public static string CSharpNameOf(string name)
+        public string CSharpName => Name.ToCamelCaseCSharpName();
+
+        public void AddReference(string dll, ITypeProvider typer)
         {
-            // remove leading "tag"
-            if (name.StartsWith("tag") && name.Length > 3 && char.IsUpper(name[3]))
-                name = name.Substring(3);
-            // trim ' ', '_'
-            name = name.Trim(' ', '_');
-            // make uppercase to camelcase
-            if (name.All(char.IsUpper) && name.Length > 1)
-                name = name.Capitalize();
-            // ABC_DEF -> AbcDef
-            if (name.Contains('_'))
-                name = name.Split('_').Select(s => s.Capitalize()).Aggregate((s1, s2) => s1 + s2);
-            return name;
+            if (!ReferencedDlls.Add(dll))
+                return; // early-out
+
+            foreach (var member in Members)
+                member.AddReference(dll, typer);
         }
 
         /// <summary>

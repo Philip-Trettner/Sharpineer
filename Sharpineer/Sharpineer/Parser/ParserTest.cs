@@ -35,7 +35,7 @@ namespace Sharpineer.Parser
             var userFuncs = hparser.ExternFunctions.Values.Where(f => f.DllName == "User32.dll" && !f.HasUnnamedParameter).ToList();
             Assert.IsNotEmpty(userFuncs);
 
-            File.WriteAllLines(@"C:\Temp\userfuncs.txt", userFuncs.OrderBy(f => f.Name).Select(f => f.Name + "(" + (f.Parameters.Count == 0 ? " " : f.Parameters.Select(p => p.ToString()).Aggregate((s1, s2) => s1 + ", " + s2)) + ") -> " + f.ReturnType));
+            //File.WriteAllLines(@"C:\Temp\userfuncs.txt", userFuncs.OrderBy(f => f.Name).Select(f => f.Name + "(" + (f.Parameters.Count == 0 ? " " : f.Parameters.Select(p => p.ToString()).Aggregate((s1, s2) => s1 + ", " + s2)) + ") -> " + f.ReturnType));
 
             var win32fd = hparser.Structs.FirstOrDefault(s => s.Value.CSharpName == "Win32FindDataa").Value;
             Assert.IsNotNull(win32fd);
@@ -55,7 +55,7 @@ namespace Sharpineer.Parser
                 list.AddRange(@struct.CSharpDefinition);
             }
 
-            File.WriteAllLines(@"C:\Temp\userfuncs-sharp.txt", list);
+            //File.WriteAllLines(@"C:\Temp\userfuncs-sharp.txt", list);
         }
     }
 }

@@ -65,6 +65,13 @@ namespace Sharpineer.Parser.Header
         /// <summary>
         /// C# Function declaration
         /// </summary>
-        public string FunctionDeclaration => string.Format("public static {0} {1}({2});", ReturnType.DecoratedCSharpType, Name, ParametersCSharpString);
+        public string FunctionDeclaration => string.Format("public static extern {0} {1}({2});", ReturnType.DecoratedCSharpType, Name, ParametersCSharpString);
+
+        public void AddReference(string dll, ITypeProvider typer)
+        {
+            ReturnType.AddReference(dll, typer);
+            foreach (var arg in Parameters)
+                arg.AddReference(dll, typer);
+        }
     }
 }

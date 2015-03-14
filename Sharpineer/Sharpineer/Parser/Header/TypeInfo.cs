@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using ClangSharp;
+using Sharpineer.Helper;
 
 namespace Sharpineer.Parser.Header
 {
@@ -24,12 +25,16 @@ namespace Sharpineer.Parser.Header
         public string OriginalName; // before typedef
         public CXTypeKind Type;
 
+        public string NonConstName => IsConst && Name.StartsWith("const ") ? Name.Substring(6) : Name;
+
         public string CSharpType;
         public string TypeComment;
 
         public string MarshalAs;
 
         public bool RequiresUnicode = false;
+
+        public bool IsConst = false;
 
         public EnumInfo EnumType; // if Type == Enum
 
@@ -46,11 +51,13 @@ namespace Sharpineer.Parser.Header
         public static TypeInfo FromClangType(CXType type)
         {
             var cantype = clang.getCanonicalType(type);
+            var isConst = clang.isConstQualifiedType(cantype) != 0;
             var info = new TypeInfo
             {
                 Name = clang.getTypeSpelling(cantype).ToString(),
                 OriginalName = clang.getTypeSpelling(type).ToString(),
-                Type = cantype.kind
+                Type = cantype.kind,
+                IsConst = isConst
             };
             switch (info.Type)
             {
@@ -142,7 +149,7 @@ namespace Sharpineer.Parser.Header
                                 case CXTypeKind.CXType_Pointer:
                                     if (PointerType.Type == CXTypeKind.CXType_Record)
                                     {
-                                        CSharpType = StructInfo.CSharpNameOf(PointerType.Name);
+                                        CSharpType = PointerType.NonConstName.ToCamelCaseCSharpName();
                                         MarshalAs = "[MarshalAs(UnmanagedType.LPStruct)]";
                                     }
                                     else
@@ -154,8 +161,13 @@ namespace Sharpineer.Parser.Header
 
                                 case CXTypeKind.CXType_Record:
                                     // direct struct has C# version
-                                    CSharpType = StructInfo.CSharpNameOf(Name);
+                                    CSharpType = Name.ToCamelCaseCSharpName();
                                     MarshalAs = "[MarshalAs(UnmanagedType.Struct)]";
+                                    break;
+
+                                case CXTypeKind.CXType_Enum:
+                                    // enums
+                                    CSharpType = Name.ToCamelCaseCSharpName();
                                     break;
 
                                 case CXTypeKind.CXType_ConstantArray:
@@ -196,5 +208,22 @@ namespace Sharpineer.Parser.Header
         }
 
         public override string ToString() => Name + " (" + OriginalName + ", " + Type + ")";
+
+        public void AddReference(string dll, ITypeProvider typer)
+        {
+            ArrayElementType?.AddReference(dll, typer);
+            PointerType?.AddReference(dll, typer);
+
+            switch (Type)
+            {
+                case CXTypeKind.CXType_Record:
+                    typer.QueryStruct(Name)?.AddReference(dll, typer);
+                    break;
+
+                case CXTypeKind.CXType_Enum:
+                    typer.QueryEnum(Name)?.AddReference(dll, typer);
+                    break;
+            }
+        }
     }
 }

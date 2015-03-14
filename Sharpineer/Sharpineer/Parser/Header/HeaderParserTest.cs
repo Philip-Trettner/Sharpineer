@@ -17,7 +17,7 @@ namespace Sharpineer.Parser.Header
             var parser = new HeaderParser("data/EnumTestHeader.h");
             parser.Parse();
 
-            var enums = parser.Enums;
+            var enums = parser.Enums.Values.ToList();
 
             /*
             enum FooE
@@ -75,7 +75,7 @@ namespace Sharpineer.Parser.Header
             var parser = new HeaderParser("Windows.h");
             parser.Parse();
 
-            var enums = parser.Enums;
+            var enums = parser.Enums.Values.ToList();
             Assert.Greater(enums.Count, 0);
         }
 
